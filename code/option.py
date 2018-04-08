@@ -33,8 +33,6 @@ parser.add_argument('--offset_val', type=int, default=800,
                     help='validation index offest')
 parser.add_argument('--ext', type=str, default='img',
                     help='dataset file extension')
-parser.add_argument('--precision', type=str, default='single',
-                    help='FP precision when test')
 parser.add_argument('--scale', default='4',
                     help='super resolution scale')
 parser.add_argument('--patch_size', type=int, default=192,
@@ -43,12 +41,10 @@ parser.add_argument('--rgb_range', type=int, default=255,
                     help='maximum value of RGB')
 parser.add_argument('--n_colors', type=int, default=3,
                     help='number of color channels to use')
-parser.add_argument('--quality', type=str, default='',
-                    help='jpeg compression quality')
+parser.add_argument('--noise', type=str, default='.',
+                    help='Gaussian noise std.')
 parser.add_argument('--chop_forward', action='store_true',
                     help='enable memory-efficient forward')
-parser.add_argument('--superfetch', type=int, default=1,
-                    help='fetch multiple batches at onece')
 
 # Model specifications
 parser.add_argument('--model', default='EDSR',
@@ -68,22 +64,27 @@ parser.add_argument('--res_scale', type=float, default=1,
                     help='residual scaling')
 parser.add_argument('--shift_mean', default=True,
                     help='subtract pixel mean from the input')
+parser.add_argument('--precision', type=str, default='single',
+                    choices=('single', 'half'),
+                    help='FP precision for test (single | half)')
 
 # Training specifications
 parser.add_argument('--reset', action='store_true',
                     help='reset the training')
 parser.add_argument('--test_every', type=int, default=1000,
                     help='do test per every N batches')
-parser.add_argument('--test_only', action='store_true',
-                    help='set this option to test the model')
 parser.add_argument('--epochs', type=int, default=300,
                     help='number of epochs to train')
 parser.add_argument('--resume', type=int, default=-1,
                     help='load the model from the specified epoch')
 parser.add_argument('--batch_size', type=int, default=16,
                     help='input batch size for training')
+parser.add_argument('--split_batch', type=int, default=1,
+                    help='split the batch into smaller chunks')
 parser.add_argument('--self_ensemble', action='store_true',
                     help='use self-ensemble method for test')
+parser.add_argument('--test_only', action='store_true',
+                    help='set this option to test the model')
 
 # Optimization specifications
 parser.add_argument('--lr', type=float, default=1e-4,
@@ -94,7 +95,6 @@ parser.add_argument('--decay_type', type=str, default='step',
                     help='learning rate decay type')
 parser.add_argument('--gamma', type=int, default=0.5,
                     help='learning rate decay factor for step decay')
-
 parser.add_argument('--optimizer', default='ADAM',
                     choices=('SGD', 'ADAM', 'RMSprop'),
                     help='optimizer to use (SGD | ADAM | RMSprop)')
@@ -110,6 +110,8 @@ parser.add_argument('--epsilon', type=float, default=1e-8,
 # Loss specifications
 parser.add_argument('--loss', type=str, default='1*L1',
                     help='loss function configuration')
+parser.add_argument('--skip_threshold', type=float, default='100',
+                    help='skipping batch that has large error')
 
 # Log specifications
 parser.add_argument('--save', type=str, default='test',
@@ -126,20 +128,12 @@ parser.add_argument('--save_results', action='store_true',
                     help='save output results')
 
 args = parser.parse_args()
-template.setTemplate(args)
+template.set_template(args)
 
 args.scale = list(map(lambda x: int(x), args.scale.split('+')))
-args.quality = args.quality.split('+')
-for i, q in enumerate(args.quality):
-    if q != '':
-        args.quality[i] = int(q)
 
 if args.epochs == 0:
     args.epochs = 1e8
-
-if args.superfetch > 1:
-    args.batch_size *= args.superfetch
-    args.print_every //= args.superfetch
 
 for arg in vars(args):
     if vars(args)[arg] == 'True':

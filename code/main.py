@@ -1,15 +1,15 @@
 import torch
 
-import utils
+import utility
 from option import args
 from data import data
 from trainer import Trainer
 
 torch.manual_seed(args.seed)
-checkpoint = utils.checkpoint(args)
+checkpoint = utility.checkpoint(args)
 
 if checkpoint.ok:
-    my_loader = data(args).get_loader()
+    my_loader = data().get_loader(args)
     t = Trainer(my_loader, checkpoint, args)
     while not t.terminate():
         t.train()

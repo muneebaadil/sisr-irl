@@ -9,8 +9,7 @@ import torch
 from torchvision import transforms
 
 def get_patch(img_in, img_tar, patch_size, scale, multi_scale=False):
-    ih, iw, c = img_in.shape
-    th, tw = scale * ih, scale * iw
+    ih, iw = img_in.shape[:2]
 
     p = scale if multi_scale else 1
     tp = p * patch_size
@@ -25,10 +24,12 @@ def get_patch(img_in, img_tar, patch_size, scale, multi_scale=False):
 
     return img_in, img_tar
 
-def set_channel(img_in, img_tar, n_channel):
-    h, w, c = img_tar.shape
-
+def set_channel(l, n_channel):
     def _set_channel(img):
+        if img.ndim == 2:
+            img = np.expand_dims(img, axis=2)
+
+        c = img.shape[2]
         if n_channel == 1 and c == 3:
             img = np.expand_dims(sc.rgb2ycbcr(img)[:, :, 0], 2)
         elif n_channel == 3 and c == 1:
@@ -36,19 +37,32 @@ def set_channel(img_in, img_tar, n_channel):
 
         return img
 
-    return _set_channel(img_in), _set_channel(img_tar)
+    return [_set_channel(_l) for _l in l]
 
-def np2Tensor(img_in, img_tar, rgb_range):
-    def _to_tensor(img):
+def np2Tensor(l, rgb_range):
+    def _np2Tensor(img):
         np_transpose = np.ascontiguousarray(img.transpose((2, 0, 1)))
-        torch_tensor = torch.from_numpy(np_transpose).float()
-        torch_tensor.mul_(rgb_range / 255)
+        tensor = torch.from_numpy(np_transpose).float()
+        tensor.mul_(rgb_range / 255)
 
-        return torch_tensor
+        return tensor
 
-    return _to_tensor(img_in), _to_tensor(img_tar)
+    return [_np2Tensor(_l) for _l in l]
 
-def augment(img_in, img_tar, hflip=True, rot=True):
+def add_noise(x, noise='.'):
+    if noise is not '.':
+        noise_type = noise[0]
+        noise_value = int(noise[1:])
+        if noise_type == 'G':
+            gaussian_noise = np.random.normal(scale=noise_value, size=x.shape)
+            gaussian_noise = gaussian_noise.round()
+            x_noise = x.astype(np.int16) + gaussian_noise.astype(np.int16)
+            x_noise = x_noise.clip(0, 255).astype(np.uint8)
+            return x_noise
+
+    return x
+
+def augment(l, hflip=True, rot=True):
     hflip = hflip and random.random() < 0.5
     vflip = rot and random.random() < 0.5
     rot90 = rot and random.random() < 0.5
@@ -60,5 +74,4 @@ def augment(img_in, img_tar, hflip=True, rot=True):
         
         return img
 
-    return _augment(img_in), _augment(img_tar)
-
+    return [_augment(_l) for _l in l]
