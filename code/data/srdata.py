@@ -9,10 +9,11 @@ import torch
 import torch.utils.data as data
 
 class SRData(data.Dataset):
-    def __init__(self, args, train=True):
+    def __init__(self, args, train=True, benchmark=False):
         self.args = args
         self.train = train
         self.split = 'train' if train else 'test'
+        self.benchmark = benchmark
         self.scale = args.scale
         self.idx_scale = 0
 
@@ -21,9 +22,10 @@ class SRData(data.Dataset):
         def _load_bin():
             self.images_hr = np.load(self._name_hrbin())
             self.images_lr = [
-                np.load(self._name_lrbin(s)) for s in self.scale]
+                np.load(self._name_lrbin(s)) for s in self.scale
+            ]
 
-        if args.ext == 'img':
+        if args.ext == 'img' or benchmark:
             self.images_hr, self.images_lr = self._scan()
         elif args.ext.find('sep') >= 0:
             self.images_hr, self.images_lr = self._scan()
@@ -84,11 +86,11 @@ class SRData(data.Dataset):
         raise NotImplementedError
 
     def __getitem__(self, idx):
-        lr, hr = self._load_file(idx)
+        lr, hr, filename = self._load_file(idx)
         lr, hr = self._get_patch(lr, hr)
         lr, hr = common.set_channel([lr, hr], self.args.n_colors)
-
-        return common.np2Tensor([lr, hr], self.args.rgb_range)
+        lr_tensor, hr_tensor = common.np2Tensor([lr, hr], self.args.rgb_range)
+        return lr_tensor, hr_tensor, filename
 
     def __len__(self):
         return len(self.images_hr)
@@ -100,14 +102,20 @@ class SRData(data.Dataset):
         idx = self._get_index(idx)
         lr = self.images_lr[self.idx_scale][idx]
         hr = self.images_hr[idx]
-        if self.args.ext == 'img':
+        if self.args.ext == 'img' or self.benchmark:
+            filename = hr
             lr = misc.imread(lr)
             hr = misc.imread(hr)
         elif self.args.ext.find('sep') >= 0:
+            filename = hr
             lr = np.load(lr)
             hr = np.load(hr)
+        else:
+            filename = str(idx + 1)
 
-        return lr, hr
+        filename = os.path.splitext(os.path.split(filename)[-1])[0]
+
+        return lr, hr, filename
 
     def _get_patch(self, lr, hr):
         patch_size = self.args.patch_size
@@ -127,3 +135,4 @@ class SRData(data.Dataset):
 
     def set_scale(self, idx_scale):
         self.idx_scale = idx_scale
+

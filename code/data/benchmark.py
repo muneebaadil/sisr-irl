@@ -12,8 +12,7 @@ import torch.utils.data as data
 
 class Benchmark(srdata.SRData):
     def __init__(self, args, train=True):
-        self.repeat = args.test_every // (args.n_train // args.batch_size)
-        super(Benchmark, self).__init__(args, train)
+        super(Benchmark, self).__init__(args, train, benchmark=True)
 
     def _scan(self):
         list_hr = []
@@ -27,6 +26,10 @@ class Benchmark(srdata.SRData):
                     'X{}/{}x{}{}'.format(s, filename, s, self.ext)
                 ))
 
+        list_hr.sort()
+        for l in list_lr:
+            l.sort()
+
         return list_hr, list_lr
 
     def _set_filesystem(self, dir_data):
@@ -34,10 +37,3 @@ class Benchmark(srdata.SRData):
         self.dir_hr = os.path.join(self.apath, 'HR')
         self.dir_lr = os.path.join(self.apath, 'LR_bicubic')
         self.ext = '.png'
-
-    def __len__(self):
-        return len(self.images_hr)
-
-    def _get_index(self, idx):
-        return idx
-

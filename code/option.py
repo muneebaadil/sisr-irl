@@ -9,10 +9,10 @@ parser.add_argument('--template', default='.',
                     help='You can set various templates in option.py')
 
 # Hardware specifications
-parser.add_argument('--n_threads', type=int, default=3,
+parser.add_argument('--n_threads', type=int, default=6,
                     help='number of threads for data loading')
-parser.add_argument('--no_cuda', action='store_true',
-                    help='enables CUDA training')
+parser.add_argument('--cpu', action='store_true',
+                    help='use cpu only')
 parser.add_argument('--n_GPUs', type=int, default=1,
                     help='number of GPUs')
 parser.add_argument('--seed', type=int, default=1,
@@ -21,10 +21,14 @@ parser.add_argument('--seed', type=int, default=1,
 # Data specifications
 parser.add_argument('--dir_data', type=str, default='../../../dataset',
                     help='dataset directory')
+parser.add_argument('--dir_demo', type=str, default='../test',
+                    help='demo image directory')
 parser.add_argument('--data_train', type=str, default='DIV2K',
                     help='train dataset name')
 parser.add_argument('--data_test', type=str, default='DIV2K',
                     help='test dataset name')
+parser.add_argument('--benchmark_noise', action='store_true',
+                    help='use noisy benchmark sets')
 parser.add_argument('--n_train', type=int, default=800,
                     help='number of training set')
 parser.add_argument('--n_val', type=int, default=10,
@@ -43,7 +47,7 @@ parser.add_argument('--n_colors', type=int, default=3,
                     help='number of color channels to use')
 parser.add_argument('--noise', type=str, default='.',
                     help='Gaussian noise std.')
-parser.add_argument('--chop_forward', action='store_true',
+parser.add_argument('--chop', action='store_true',
                     help='enable memory-efficient forward')
 
 # Model specifications
@@ -79,8 +83,6 @@ parser.add_argument('--test_every', type=int, default=1000,
                     help='do test per every N batches')
 parser.add_argument('--epochs', type=int, default=300,
                     help='number of epochs to train')
-parser.add_argument('--resume', type=int, default=-1,
-                    help='load the model from the specified epoch')
 parser.add_argument('--batch_size', type=int, default=16,
                     help='input batch size for training')
 parser.add_argument('--split_batch', type=int, default=1,
@@ -89,6 +91,8 @@ parser.add_argument('--self_ensemble', action='store_true',
                     help='use self-ensemble method for test')
 parser.add_argument('--test_only', action='store_true',
                     help='set this option to test the model')
+parser.add_argument('--gan_k', type=int, default=1,
+                    help='k value for adversarial loss')
 
 # Optimization specifications
 parser.add_argument('--lr', type=float, default=1e-4,
@@ -97,7 +101,7 @@ parser.add_argument('--lr_decay', type=int, default=200,
                     help='learning rate decay per N epochs')
 parser.add_argument('--decay_type', type=str, default='step',
                     help='learning rate decay type')
-parser.add_argument('--gamma', type=int, default=0.5,
+parser.add_argument('--gamma', type=float, default=0.5,
                     help='learning rate decay factor for step decay')
 parser.add_argument('--optimizer', default='ADAM',
                     choices=('SGD', 'ADAM', 'RMSprop'),
@@ -110,11 +114,13 @@ parser.add_argument('--beta2', type=float, default=0.999,
                     help='ADAM beta2')
 parser.add_argument('--epsilon', type=float, default=1e-8,
                     help='ADAM epsilon for numerical stability')
+parser.add_argument('--weight_decay', type=float, default=0,
+                    help='weight decay')
 
 # Loss specifications
 parser.add_argument('--loss', type=str, default='1*L1',
                     help='loss function configuration')
-parser.add_argument('--skip_threshold', type=float, default='100',
+parser.add_argument('--skip_threshold', type=float, default='1e6',
                     help='skipping batch that has large error')
 
 # Log specifications
@@ -122,6 +128,8 @@ parser.add_argument('--save', type=str, default='test',
                     help='file name to save')
 parser.add_argument('--load', type=str, default='.',
                     help='file name to load')
+parser.add_argument('--resume', type=int, default=0,
+                    help='resume from specific checkpoint')
 parser.add_argument('--print_model', action='store_true',
                     help='print model')
 parser.add_argument('--save_models', action='store_true',
