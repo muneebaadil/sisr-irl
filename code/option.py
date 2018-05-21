@@ -29,17 +29,17 @@ parser.add_argument('--data_test', type=str, default='DIV2K',
                     help='test dataset name')
 parser.add_argument('--benchmark_noise', action='store_true',
                     help='use noisy benchmark sets')
-parser.add_argument('--n_train', type=int, default=800,
+parser.add_argument('--n_train', type=int, default=790,
                     help='number of training set')
 parser.add_argument('--n_val', type=int, default=10,
                     help='number of validation set')
-parser.add_argument('--offset_val', type=int, default=800,
+parser.add_argument('--offset_val', type=int, default=790,
                     help='validation index offest')
 parser.add_argument('--ext', type=str, default='img',
                     help='dataset file extension')
 parser.add_argument('--scale', default='4',
                     help='super resolution scale')
-parser.add_argument('--patch_size', type=int, default=192,
+parser.add_argument('--patch_size', type=int, default=96,
                     help='output patch size')
 parser.add_argument('--rgb_range', type=int, default=255,
                     help='maximum value of RGB')
@@ -58,14 +58,14 @@ parser.add_argument('--act', type=str, default='relu',
                     help='activation function')
 parser.add_argument('--pre_train', type=str, default='.',
                     help='pre-trained model directory')
-parser.add_argument('--extend', type=str, default='.',
-                    help='pre-trained model directory')
+# parser.add_argument('--extend', type=str, default='.',
+#                     help='pre-trained model directory')
 parser.add_argument('--n_resblocks', type=int, default=16,
                     help='number of residual blocks')
-parser.add_argument('--n_denseblocks', type=int, default=4,
-                    help='number of dense blocks (Denseptions)')
-parser.add_argument('--n_layers', type=int, default=4,
-                    help='number of layers in a dense block (Denseptions)') 
+# parser.add_argument('--n_denseblocks', type=int, default=4,
+#                     help='number of dense blocks (Denseptions)')
+# parser.add_argument('--n_layers', type=int, default=4,
+#                     help='number of layers in a dense block (Denseptions)') 
 parser.add_argument('--n_feats', type=int, default=64,
                     help='number of feature maps')
 parser.add_argument('--res_scale', type=float, default=1,
