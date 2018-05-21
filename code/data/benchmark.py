@@ -1,3 +1,4 @@
+import scandir
 import os
 
 from data import common
@@ -17,7 +18,7 @@ class Benchmark(srdata.SRData):
     def _scan(self):
         list_hr = []
         list_lr = [[] for _ in self.scale]
-        for entry in os.scandir(self.dir_hr):
+        for entry in scandir.scandir(self.dir_hr):
             filename = os.path.splitext(entry.name)[0]
             list_hr.append(os.path.join(self.dir_hr, filename + self.ext))
             for si, s in enumerate(self.scale):

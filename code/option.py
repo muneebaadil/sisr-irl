@@ -58,6 +58,10 @@ parser.add_argument('--extend', type=str, default='.',
                     help='pre-trained model directory')
 parser.add_argument('--n_resblocks', type=int, default=16,
                     help='number of residual blocks')
+parser.add_argument('--n_denseblocks', type=int, default=4,
+                    help='number of dense blocks (Denseptions)')
+parser.add_argument('--n_layers', type=int, default=4,
+                    help='number of layers in a dense block (Denseptions)') 
 parser.add_argument('--n_feats', type=int, default=64,
                     help='number of feature maps')
 parser.add_argument('--res_scale', type=float, default=1,
