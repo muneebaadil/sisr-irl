@@ -1,0 +1,2 @@
+#LOCAL SCRIPTS (for testing)
+#python main.py --model EDSR --scale 4 --save EDSR_baseline_x2 --reset --cpu --dir_data ~/Documents/ --n_train 3 --chop --n_val 1 --offset_val 800 --batch_size 1 --test_every 1
