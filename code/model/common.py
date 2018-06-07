@@ -130,3 +130,13 @@ class Upsampler(nn.Sequential):
 
         super(Upsampler, self).__init__(*m)
 
+    def forward(self, input):
+        self.outputs = []
+
+        for i, module in enumerate(self._modules.values()):
+            input = module(input)
+            
+            if i%2:
+                self.outputs.append(input)
+
+        return input
