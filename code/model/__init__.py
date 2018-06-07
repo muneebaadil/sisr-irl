@@ -112,6 +112,20 @@ class Model(nn.Module):
             )
 
     def forward_chop(self, x, shave=10, min_size=160000):
+
+        def _join(sr_list,x,b,c,h,w,h_half,w_half,h_size,w_size): 
+            output = x.new(b, c, h, w)
+            output[:, :, 0:h_half, 0:w_half] \
+                = sr_list[0][:, :, 0:h_half, 0:w_half]
+            output[:, :, 0:h_half, w_half:w] \
+                = sr_list[1][:, :, 0:h_half, (w_size - w + w_half):w_size]
+            output[:, :, h_half:h, 0:w_half] \
+                = sr_list[2][:, :, (h_size - h + h_half):h_size, 0:w_half]
+            output[:, :, h_half:h, w_half:w] \
+                = sr_list[3][:, :, (h_size - h + h_half):h_size, \
+                            (w_size - w + w_half):w_size]
+            return output
+
         scale = self.scale[self.idx_scale]
         n_GPUs = min(self.n_GPUs, 4)
         b, c, h, w = x.size()
@@ -140,16 +154,7 @@ class Model(nn.Module):
         h_size, w_size = scale * h_size, scale * w_size
         shave *= scale
 
-        output = x.new(b, c, h, w)
-        output[:, :, 0:h_half, 0:w_half] \
-            = sr_list[0][:, :, 0:h_half, 0:w_half]
-        output[:, :, 0:h_half, w_half:w] \
-            = sr_list[1][:, :, 0:h_half, (w_size - w + w_half):w_size]
-        output[:, :, h_half:h, 0:w_half] \
-            = sr_list[2][:, :, (h_size - h + h_half):h_size, 0:w_half]
-        output[:, :, h_half:h, w_half:w] \
-            = sr_list[3][:, :, (h_size - h + h_half):h_size, (w_size - w + w_half):w_size]
-
+        output = _join(sr_list,x,b,c,h,w,h_half,w_half,h_size,w_size)
         return output
 
     def forward_x8(self, x, forward_function):
