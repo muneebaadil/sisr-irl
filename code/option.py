@@ -29,11 +29,11 @@ parser.add_argument('--data_test', type=str, default='DIV2K',
                     help='test dataset name')
 parser.add_argument('--benchmark_noise', action='store_true',
                     help='use noisy benchmark sets')
-parser.add_argument('--n_train', type=int, default=790,
+parser.add_argument('--n_train', type=int, default=800,
                     help='number of training set')
 parser.add_argument('--n_val', type=int, default=10,
                     help='number of validation set')
-parser.add_argument('--offset_val', type=int, default=790,
+parser.add_argument('--offset_val', type=int, default=800,
                     help='validation index offest')
 parser.add_argument('--ext', type=str, default='img',
                     help='dataset file extension')
