@@ -135,4 +135,3 @@ class SRData(data.Dataset):
 
     def set_scale(self, idx_scale):
         self.idx_scale = idx_scale
-

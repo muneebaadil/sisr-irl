@@ -132,7 +132,7 @@ class checkpoint():
     def save_featmaps(self, filename, featmaps, scales):
         for featmap, scale in zip(featmaps, scales):
             filename_ = '{}/featmaps/X{}/{}.npy'.format(self.dir, scale, filename)
-            featmap_ = featmap.numpy()
+            featmap_ = featmap.data.cpu()[0].numpy()
             np.save(filename_,featmap_)
 
 def quantize(img, rgb_range):
