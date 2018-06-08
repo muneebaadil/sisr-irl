@@ -1,5 +1,6 @@
 import os
 from importlib import import_module
+import pdb
 
 import torch
 import torch.nn as nn
@@ -51,7 +52,10 @@ class Model(nn.Module):
         elif self.chop and not self.training:
             return self.forward_chop(x)
         else:
-            return self.model(x)
+            #pdb.set_trace()
+            output = self.model(x)
+            featmaps = self.model.tail.modules().next()._modules['0'].outputs
+            return output, featmaps
 
     def get_model(self):
         if self.n_GPUs == 1:

@@ -138,6 +138,8 @@ parser.add_argument('--print_every', type=int, default=100,
                     help='how many batches to wait before logging training status')
 parser.add_argument('--save_results', action='store_true',
                     help='save output results')
+parser.add_argument('--save_featmaps', action='store_true',
+                    help='save intermediate upsampled feature maps')
 
 args = parser.parse_args()
 template.set_template(args)
