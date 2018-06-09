@@ -18,11 +18,15 @@ class Data:
         self.loader_train = None
         if not args.test_only:
 
-            if args.data_train != 'RRL':
+            if args.data_train.lower() != 'rrl':
                 module_train = import_module('data.' + args.data_train.lower())
                 trainset = getattr(module_train, args.data_train)(args)
             else: 
-                pass
+                module_train = import_module('data.' + args.rrl_data.lower())
+                trainclass = getattr(module_train, args.rrl_data)
+                
+                module_train = import_module('data.rrl')
+                trainset = getattr(module_train, 'RRL')(trainclass, args)
 
             self.loader_train = MSDataLoader(
                     args,
@@ -44,7 +48,7 @@ class Data:
                 )
 
         else:
-            if args.data_test != 'RRL': 
+            if args.data_test.lower() != 'rrl': 
                 module_test = import_module('data.' +  args.data_test.lower())
                 testset = getattr(module_test, args.data_test)(args, train=False)
             else: 
