@@ -14,13 +14,13 @@ if checkpoint.ok:
 
     if args.data_train.lower()=='rrl' or args.data_test.lower()=='rrl':     
         args.is_sub_mean = True
-        n_colors = args.n_colors 
-        args.n_colors = 3 
+        n_channel_in = args.n_channel_in 
+        args.n_channel_in = 3
 
         model_ref = model.Model(args, checkpoint)
         loader = data.Data(args, model_ref)
 
-        args.n_colors = n_colors
+        args.n_channel_in = n_channel_in
         args.is_sub_mean = False
         args.pre_train = '.'
         
