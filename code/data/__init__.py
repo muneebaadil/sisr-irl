@@ -6,7 +6,7 @@ from torch.utils.data.dataloader import default_collate
 import pdb
 
 class Data:
-    def __init__(self, args):
+    def __init__(self, args, model):
         kwargs = {}
         if not args.cpu:
             kwargs['collate_fn'] = default_collate
@@ -26,7 +26,7 @@ class Data:
                 trainclass = getattr(module_train, args.rrl_data)
                 
                 module_train = import_module('data.rrl')
-                trainset = getattr(module_train, 'RRL')(trainclass, args)
+                trainset = getattr(module_train, 'RRL')(trainclass, args, model)
 
             self.loader_train = MSDataLoader(
                     args,
@@ -56,7 +56,7 @@ class Data:
                 testclass = getattr(module_test, args.rrl_data)
 
                 module_test = import_module('data.rrl')
-                testset = getattr(module_test, 'RRL')(testclass, args, False)
+                testset = getattr(module_test, 'RRL')(testclass, args, model, False)
 
         self.loader_test = MSDataLoader(
             args,

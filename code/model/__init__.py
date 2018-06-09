@@ -52,7 +52,6 @@ class Model(nn.Module):
         elif self.chop and not self.training:
             return self.forward_chop(x)
         else:
-            #pdb.set_trace()
             output = self.model(x)
             featmaps = self.model.tail.modules().next()._modules['0'].outputs
             return output, featmaps
