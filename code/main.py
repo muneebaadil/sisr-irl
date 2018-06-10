@@ -1,4 +1,5 @@
 import torch
+import pdb
 
 import utility
 import data
@@ -23,6 +24,10 @@ if checkpoint.ok:
         args.n_channel_in = n_channel_in
         args.is_sub_mean = False
         args.pre_train = '.'
+        args.scale = [args.scale[0] / (2**args.branch_num)]
+
+        for p in model_ref.parameters(): 
+            p.requires_grad = False
         
     model = model.Model(args, checkpoint)
 

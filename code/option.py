@@ -57,7 +57,8 @@ parser.add_argument('--chop', action='store_true',
 # Model specifications
 parser.add_argument('--model', default='EDSR',
                     help='model name')
-
+parser.add_argument('--branch_num', type=int, default=1,
+                    help='branch number for RRL')
 parser.add_argument('--act', type=str, default='relu',
                     help='activation function')
 parser.add_argument('--pre_train', type=str, default='.',
