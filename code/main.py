@@ -12,9 +12,8 @@ torch.manual_seed(args.seed)
 checkpoint = utility.checkpoint(args)
 
 if checkpoint.ok:
-
     if args.data_train.lower()=='rrl' or args.data_test.lower()=='rrl':     
-        args.is_sub_mean = True
+        args.is_sub_mean = True 
         n_channel_in = args.n_channel_in 
         args.n_channel_in = 3
 
@@ -28,6 +27,10 @@ if checkpoint.ok:
 
         for p in model_ref.parameters(): 
             p.requires_grad = False
+
+    else: 
+        args.is_sub_mean = True 
+        loader = data.Data(args, None)
         
     model = model.Model(args, checkpoint)
 
