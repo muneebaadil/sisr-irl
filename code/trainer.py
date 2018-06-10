@@ -48,6 +48,7 @@ class Trainer():
             timer_model.tic()
 
             self.optimizer.zero_grad()
+            print '[trainer]: lr shape = {}'.format(lr.size())
             sr = self.model(lr, idx_scale)
             loss = self.loss(sr, hr)
             if loss.item() < self.args.skip_threshold * self.error_last:
@@ -93,7 +94,7 @@ class Trainer():
                     else:
                         lr = self.prepare([lr])[0]
 
-                    sr = self.model(lr, idx_scale)
+                    sr, featmaps = self.model(lr, idx_scale)
                     sr = utility.quantize(sr, self.args.rgb_range)
 
                     save_list = [sr]
@@ -106,6 +107,10 @@ class Trainer():
 
                     if self.args.save_results:
                         self.ckp.save_results(filename, save_list, scale)
+                    
+                    if self.args.save_featmaps:
+                        scales = list(scale) if ((scale==2) or (scale==3)) else [2,4]
+                        self.ckp.save_featmaps(filename, featmaps, scales)
 
                 self.ckp.log[-1, idx_scale] = eval_acc / len(self.loader_test)
                 best = self.ckp.log.max(0)

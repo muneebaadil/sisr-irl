@@ -27,7 +27,9 @@ class Demo(data.Dataset):
         filename = os.path.split(self.filelist[idx])[-1]
         filename, _ = os.path.splitext(filename)
         lr = misc.imread(self.filelist[idx])
-        lr = common.set_channel([lr], self.args.n_colors)[0]
+        
+        if self.args.n_channel_in == self.args.n_channel_out: 
+            lr = common.set_channel([lr], self.args.n_channel_out)[0]
 
         return common.np2Tensor([lr], self.args.rgb_range)[0], -1, filename
 

@@ -25,15 +25,17 @@ parser.add_argument('--dir_demo', type=str, default='../test',
                     help='demo image directory')
 parser.add_argument('--data_train', type=str, default='DIV2K',
                     help='train dataset name')
+parser.add_argument('--rrl_data', type=str, default='DIV2K',
+                    help='dataset to load using RRL dataloader')
 parser.add_argument('--data_test', type=str, default='DIV2K',
                     help='test dataset name')
 parser.add_argument('--benchmark_noise', action='store_true',
                     help='use noisy benchmark sets')
-parser.add_argument('--n_train', type=int, default=790,
+parser.add_argument('--n_train', type=int, default=800,
                     help='number of training set')
 parser.add_argument('--n_val', type=int, default=10,
                     help='number of validation set')
-parser.add_argument('--offset_val', type=int, default=790,
+parser.add_argument('--offset_val', type=int, default=800,
                     help='validation index offest')
 parser.add_argument('--ext', type=str, default='img',
                     help='dataset file extension')
@@ -43,8 +45,10 @@ parser.add_argument('--patch_size', type=int, default=96,
                     help='output patch size')
 parser.add_argument('--rgb_range', type=int, default=255,
                     help='maximum value of RGB')
-parser.add_argument('--n_colors', type=int, default=3,
-                    help='number of color channels to use')
+parser.add_argument('--n_channel_in', type=int, default=3,
+                    help='number of input channels for network')
+parser.add_argument('--n_channel_out', type=int, default=3,
+                    help='number of channels for network to output')
 parser.add_argument('--noise', type=str, default='.',
                     help='Gaussian noise std.')
 parser.add_argument('--chop', action='store_true',
@@ -138,6 +142,8 @@ parser.add_argument('--print_every', type=int, default=100,
                     help='how many batches to wait before logging training status')
 parser.add_argument('--save_results', action='store_true',
                     help='save output results')
+parser.add_argument('--save_featmaps', action='store_true',
+                    help='save intermediate upsampled feature maps')
 
 args = parser.parse_args()
 template.set_template(args)

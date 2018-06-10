@@ -88,7 +88,10 @@ class SRData(data.Dataset):
     def __getitem__(self, idx):
         lr, hr, filename = self._load_file(idx)
         lr, hr = self._get_patch(lr, hr)
-        lr, hr = common.set_channel([lr, hr], self.args.n_colors)
+
+        if self.args.n_channel_in == self.args.n_channel_out: 
+            lr, hr = common.set_channel([lr, hr], self.args.n_channel_in)
+            
         lr_tensor, hr_tensor = common.np2Tensor([lr, hr], self.args.rgb_range)
         return lr_tensor, hr_tensor, filename
 
@@ -135,4 +138,3 @@ class SRData(data.Dataset):
 
     def set_scale(self, idx_scale):
         self.idx_scale = idx_scale
-

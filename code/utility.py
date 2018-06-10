@@ -66,6 +66,9 @@ class checkpoint():
         _make_dir(self.dir)
         _make_dir(self.dir + '/model')
         _make_dir(self.dir + '/results')
+        _make_dir(self.dir + '/featmaps/X2')
+        _make_dir(self.dir + '/featmaps/X3')
+        _make_dir(self.dir + '/featmaps/X4')
 
         open_type = 'a' if os.path.exists(self.dir + '/log.txt') else 'w'
         self.log_file = open(self.dir + '/log.txt', open_type)
@@ -125,6 +128,12 @@ class checkpoint():
             normalized = v[0].data.mul(255 / self.args.rgb_range)
             ndarr = normalized.byte().permute(1, 2, 0).cpu().numpy()
             misc.imsave('{}{}.png'.format(filename, p), ndarr)
+
+    def save_featmaps(self, filename, featmaps, scales):
+        for featmap, scale in zip(featmaps, scales):
+            filename_ = '{}/featmaps/X{}/{}.npy'.format(self.dir, scale, filename)
+            featmap_ = featmap.data.cpu()[0].numpy()
+            np.save(filename_,featmap_)
 
 def quantize(img, rgb_range):
     pixel_range = 255 / rgb_range

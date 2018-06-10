@@ -13,14 +13,17 @@ class EDSR(nn.Module):
         n_feats = args.n_feats
         kernel_size = 3 
         scale = args.scale[0]
+        self.is_sub_mean = args.is_sub_mean
+
         act = nn.ReLU(True)
 
         rgb_mean = (0.4488, 0.4371, 0.4040)
         rgb_std = (1.0, 1.0, 1.0)
+        
         self.sub_mean = common.MeanShift(args.rgb_range, rgb_mean, rgb_std)
         
         # define head module
-        m_head = [conv(args.n_colors, n_feats, kernel_size)]
+        m_head = [conv(args.n_channel_in, n_feats, kernel_size)]
 
         # define body module
         m_body = [
@@ -33,7 +36,7 @@ class EDSR(nn.Module):
         # define tail module
         m_tail = [
             common.Upsampler(conv, scale, n_feats, act=False),
-            conv(n_feats, args.n_colors, kernel_size)
+            conv(n_feats, args.n_channel_out, kernel_size)
         ]
 
         self.add_mean = common.MeanShift(args.rgb_range, rgb_mean, rgb_std, 1)
@@ -43,7 +46,9 @@ class EDSR(nn.Module):
         self.tail = nn.Sequential(*m_tail)
 
     def forward(self, x):
-        x = self.sub_mean(x)
+        if self.is_sub_mean: 
+            x = self.sub_mean(x)
+
         x = self.head(x)
 
         res = self.body(x)
