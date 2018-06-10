@@ -87,6 +87,10 @@ class Trainer():
                 self.loader_test.dataset.set_scale(idx_scale)
                 tqdm_test = tqdm(self.loader_test, ncols=80)
                 for idx_img, (lr, hr, filename, _) in enumerate(tqdm_test):
+
+                    torch.save(lr, 'feat_test')
+                    torch.save(hr, 'label_test')
+                    
                     filename = filename[0]
                     no_eval = (hr.nelement() == 1)
                     if not no_eval:
