@@ -16,6 +16,8 @@ if checkpoint.ok:
         args.is_sub_mean = True 
         n_channel_in = args.n_channel_in 
         args.n_channel_in = 3
+        cpu = args.cpu 
+        args.cpu = True
 
         model_ref = model.Model(args, checkpoint)
         loader = data.Data(args, model_ref)
@@ -24,6 +26,7 @@ if checkpoint.ok:
         args.is_sub_mean = False
         args.pre_train = '.'
         args.scale = [args.scale[0] / (2**args.branch_num)]
+        args.cpu = cpu
 
         for p in model_ref.parameters(): 
             p.requires_grad = False

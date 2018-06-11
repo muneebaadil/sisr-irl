@@ -48,7 +48,6 @@ class Trainer():
             timer_model.tic()
 
             self.optimizer.zero_grad()
-            print '[trainer]: lr shape = {}'.format(lr.size())
             sr = self.model(lr, idx_scale)
             loss = self.loss(sr, hr)
             if loss.item() < self.args.skip_threshold * self.error_last:
@@ -87,9 +86,6 @@ class Trainer():
                 self.loader_test.dataset.set_scale(idx_scale)
                 tqdm_test = tqdm(self.loader_test, ncols=80)
                 for idx_img, (lr, hr, filename, _) in enumerate(tqdm_test):
-
-                    torch.save(lr, 'feat_test')
-                    torch.save(hr, 'label_test')
                     
                     filename = filename[0]
                     no_eval = (hr.nelement() == 1)
@@ -98,7 +94,7 @@ class Trainer():
                     else:
                         lr = self.prepare([lr])[0]
 
-                    sr, featmaps = self.model(lr, idx_scale)
+                    sr = self.model(lr, idx_scale)
                     sr = utility.quantize(sr, self.args.rgb_range)
 
                     save_list = [sr]
