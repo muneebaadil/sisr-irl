@@ -18,12 +18,12 @@ def RRL(dataset, args, model, train=True):
 
         def __getitem__(self, idx): 
             lr_tensor, hr_tensor, filename = super(_RRL, self).__getitem__(idx)
-            print 'self model ref type = {}'.format(type(self.model_ref))
-            self.model_ref.forward(lr_tensor.unsqueeze_(0),0)
+            pred = self.model_ref.forward(lr_tensor.unsqueeze_(0),0)
 
             featmaps = self.model_ref.model.tail.modules().next()._modules['0'].outputs
+            residual = hr_tensor - pred[0]
 
-            return featmaps[0][0], hr_tensor, filename
+            return featmaps[0][0], residual, filename
 
     return _RRL(args, model, train)
     

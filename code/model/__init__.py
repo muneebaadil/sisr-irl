@@ -52,9 +52,6 @@ class Model(nn.Module):
         elif self.chop and not self.training:
             return self.forward_chop(x)
         else:
-            # output = self.model(x)
-            # featmaps = self.model.tail.modules().next()._modules['0'].outputs
-            # return output, featmaps
             return self.model(x)
 
     def get_model(self):
