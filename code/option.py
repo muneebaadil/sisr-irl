@@ -35,7 +35,7 @@ parser.add_argument('--n_train', type=int, default=800,
                     help='number of training set')
 parser.add_argument('--n_val', type=int, default=10,
                     help='number of validation set')
-parser.add_argument('--offset_val', type=int, default=800,
+parser.add_argument('--offset_val', type=int, default=790,
                     help='validation index offest')
 parser.add_argument('--ext', type=str, default='img',
                     help='dataset file extension')
@@ -59,18 +59,16 @@ parser.add_argument('--model', default='EDSR',
                     help='model name')
 parser.add_argument('--branch_num', type=int, default=1,
                     help='branch number for RRL')
+parser.add_argument('--half_feats', action='store_true', 
+                    help='whether half the number of feats at each branch')
+parser.add_argument('--half_resblocks', action='store_true',
+                    help='whether half the number of resblocks at each branch'
 parser.add_argument('--act', type=str, default='relu',
                     help='activation function')
 parser.add_argument('--pre_train', type=str, default='.',
                     help='pre-trained model directory')
-# parser.add_argument('--extend', type=str, default='.',
-#                     help='pre-trained model directory')
 parser.add_argument('--n_resblocks', type=int, default=16,
                     help='number of residual blocks')
-# parser.add_argument('--n_denseblocks', type=int, default=4,
-#                     help='number of dense blocks (Denseptions)')
-# parser.add_argument('--n_layers', type=int, default=4,
-#                     help='number of layers in a dense block (Denseptions)') 
 parser.add_argument('--n_feats', type=int, default=64,
                     help='number of feature maps')
 parser.add_argument('--res_scale', type=float, default=1,
