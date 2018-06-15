@@ -29,10 +29,10 @@ if checkpoint.ok:
         args.cpu = cpu
 
         if args.half_feats: 
-            args.num_feats = args.num_feats / (2**args.branch_num)
+            args.n_feats = args.n_feats / (2**args.branch_num)
 
         if args.half_resblocks: 
-            args.num_resblocks = args.num_resblocks / (2**args.branch_num)
+            args.n_resblocks = args.n_resblocks / (2**args.branch_num)
 
         for p in model_ref.parameters(): 
             p.requires_grad = False

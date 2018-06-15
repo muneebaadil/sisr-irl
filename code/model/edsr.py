@@ -58,7 +58,8 @@ class EDSR(nn.Module):
         res += x
 
         x = self.tail(res)
-        x = self.add_mean(x)
+	if self.is_sub_mean: 
+	    x = self.add_mean(x)
 
         return x 
 
