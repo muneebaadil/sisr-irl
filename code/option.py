@@ -31,7 +31,7 @@ parser.add_argument('--data_test', type=str, default='DIV2K',
                     help='test dataset name')
 parser.add_argument('--benchmark_noise', action='store_true',
                     help='use noisy benchmark sets')
-parser.add_argument('--n_train', type=int, default=800,
+parser.add_argument('--n_train', type=int, default=790,
                     help='number of training set')
 parser.add_argument('--n_val', type=int, default=10,
                     help='number of validation set')
@@ -62,7 +62,7 @@ parser.add_argument('--branch_num', type=int, default=1,
 parser.add_argument('--half_feats', action='store_true', 
                     help='whether half the number of feats at each branch')
 parser.add_argument('--half_resblocks', action='store_true',
-                    help='whether half the number of resblocks at each branch'
+                    help='whether half the number of resblocks at each branch')
 parser.add_argument('--act', type=str, default='relu',
                     help='activation function')
 parser.add_argument('--pre_train', type=str, default='.',
