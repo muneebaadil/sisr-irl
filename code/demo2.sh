@@ -16,11 +16,24 @@
 
 
 #DEV DONE; EXPERIMENTS SCRIPTS
-#x4 scale, branch = 1 
-#python main.py --data_train rrl --rrl_data DIV2K --data_test rrl --ext img --scale 4 --n_channel_in 64 --model EDSR --branch_num 1 --half_resblocks --n_resblocks 16 --n_feats 64 --pre_train ../experiment/model/EDSR_baseline_x4.pt --print_model --dir_data /datadrive --cpu
+#   Baseline EDSR scripts
+#       x4 scale, branch = 1 
+#       python main.py --data_train rrl --rrl_data DIV2K --data_test rrl --ext img --scale 4 --n_channel_in 64 --model EDSR --branch_num 1 --half_resblocks --n_resblocks 16 --n_feats 64 --pre_train ../experiment/model/EDSR_baseline_x4.pt --print_model --dir_data /datadrive --cpu
 
-#x2 scale, branch = 1 
-#python main.py --data_train rrl --rrl_data DIV2K --data_test rrl --ext img --scale 2 --n_channel_in 64 --model EDSR --branch_num 1 --half_resblocks --n_resblocks 16 --n_feats 64 --pre_train ../experiment/model/EDSR_baseline_x2.pt --print_model --dir_data /datadrive --reset 
+#       x2 scale, branch = 1 
+#       python main.py --data_train rrl --rrl_data DIV2K --data_test rrl --ext img --scale 2 --n_channel_in 64 --model EDSR --branch_num 1 --half_resblocks --n_resblocks 16 --n_feats 64 --pre_train ../experiment/model/EDSR_baseline_x2.pt --print_model --dir_data /datadrive --reset 
 
-#x3 scale, branch = 1
-#python main.py --data_train rrl --rrl_data DIV2K --data_test rrl --ext img --scale 3 --n_channel_in 64 --model EDSR --branch_num 1 --half_resblocks --n_resblocks 16 --n_feats 64 --pre_train ../experiment/model/EDSR_baseline_x3.pt --print_model --dir_data /datadrive --reset
+#       x3 scale, branch = 1
+#       python main.py --data_train rrl --rrl_data DIV2K --data_test rrl --ext img --scale 3 --n_channel_in 64 --model EDSR --branch_num 1 --half_resblocks --n_resblocks 16 --n_feats 64 --pre_train ../experiment/model/EDSR_baseline_x3.pt --print_model --dir_data /datadrive --reset
+
+
+#   Final EDSR scripts
+#       #x4 scale, branch = 1 
+#       python main.py --data_train rrl --rrl_data DIV2K --data_test rrl --ext img --scale 4 --n_channel_in 64 --chop --model EDSR --branch_num 1 --half_resblocks --n_resblocks 32 --n_feats 256 --pre_train ../experiment/model/EDSR_x4.pt --print_model --dir_data /datadrive --reset --cpu
+
+#       #x2 scale, branch = 1 
+#       python main.py --data_train rrl --rrl_data DIV2K --data_test rrl --ext img --scale 2 --n_channel_in 64 --chop --model EDSR --branch_num 1 --half_resblocks --n_resblocks 32 --n_feats 256 --pre_train ../experiment/model/EDSR_x2.pt --print_model --dir_data /datadrive --reset --cpu
+
+#       #x2 scale, branch = 1 
+#       python main.py --data_train rrl --rrl_data DIV2K --data_test rrl --ext img --scale 3 --n_channel_in 64 --chop --model EDSR --branch_num 1 --half_resblocks --n_resblocks 32 --n_feats 256 --pre_train ../experiment/model/EDSR_x3.pt --print_model --dir_data /datadrive --reset --cpu
+
