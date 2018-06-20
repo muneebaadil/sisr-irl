@@ -111,15 +111,24 @@ class DenseBlock(nn.Module):
         return out 
     
 class Upsampler(nn.Sequential):
-    def __init__(self, conv, scale, n_feat, bn=False, act=False, bias=True):
+    def __init__(self, conv, scale, n_feat, bn=False, act=False, bias=True,
+                type='espcnn'):
 
         m = []
         if (scale & (scale - 1)) == 0:    # Is scale = 2^n?
             for _ in range(int(math.log(scale, 2))):
-                m.append(conv(n_feat, 4 * n_feat, 3, bias))
-                m.append(nn.PixelShuffle(2))
-                if bn: m.append(nn.BatchNorm2d(n_feat))
-                if act: m.append(act())
+
+                if type=='espcnn':
+                    m.append(conv(n_feat, 4 * n_feat, 3, bias))
+                    m.append(nn.PixelShuffle(2))
+                    if bn: m.append(nn.BatchNorm2d(n_feat))
+                    if act: m.append(act())
+
+                elif type=='deconv':
+                    m.append(conv(n_feat, n_feat, 2, 2, padding=0,
+                     bias=bias))
+                    if act: m.append(nn.ReLU(True))
+
         elif scale == 3:
             m.append(conv(n_feat, 9 * n_feat, 3, bias))
             m.append(nn.PixelShuffle(3))
