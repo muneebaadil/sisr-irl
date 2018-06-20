@@ -26,7 +26,6 @@ if checkpoint.ok:
         args.is_sub_mean = False
         args.pre_train = '.'
         args.scale = [args.scale[0] // (2**args.branch_num)]
-        pdb.set_trace()
         args.cpu = cpu
 
         if args.half_feats: 

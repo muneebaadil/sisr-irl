@@ -20,14 +20,17 @@
 #       x4 scale, branch = 1 
 #       python main.py --data_train rrl --rrl_data DIV2K --data_test rrl --ext img --scale 4 --n_channel_in 64 --model EDSR --branch_num 1 --half_resblocks --n_resblocks 16 --n_feats 64 --pre_train ../experiment/model/EDSR_baseline_x4.pt --epochs 30 --print_model --dir_data /datadrive --cpu
 #       python main.py --data_train rrl --rrl_data DIV2K --data_test rrl --ext img --scale 4 --n_channel_in 64 --model EDSR --branch_num 1 --half_feats --n_resblocks 16 --n_feats 64 --pre_train ../experiment/model/EDSR_baseline_x4.pt --epochs 30 --print_model --dir_data /datadrive --save test1
+#       python main.py --data_train rrl --rrl_data DIV2K --data_test rrl --ext img --scale 4 --n_channel_in 64 --model EDSR --branch_num 1 --half_resblocks --half_feats --n_resblocks 16 --n_feats 64 --pre_train ../experiment/model/EDSR_baseline_x4.pt --epochs 30 --print_model --dir_data /datadrive --save test4
 
 #       x2 scale, branch = 1 
 #       python main.py --data_train rrl --rrl_data DIV2K --data_test rrl --ext img --scale 2 --n_channel_in 64 --model EDSR --branch_num 1 --half_resblocks --n_resblocks 16 --n_feats 64 --pre_train ../experiment/model/EDSR_baseline_x2.pt --epochs 30 --print_model --dir_data /datadrive --reset 
 #       python main.py --data_train rrl --rrl_data DIV2K --data_test rrl --ext img --scale 2 --n_channel_in 64 --model EDSR --branch_num 1 --half_feats --n_resblocks 16 --n_feats 64 --pre_train ../experiment/model/EDSR_baseline_x2.pt --epochs 30 --print_model --dir_data /datadrive --save test2
+#       python main.py --data_train rrl --rrl_data DIV2K --data_test rrl --ext img --scale 2 --n_channel_in 64 --model EDSR --branch_num 1 --half_resblocks --half_feats --n_resblocks 16 --n_feats 64 --pre_train ../experiment/model/EDSR_baseline_x2.pt --epochs 30 --print_model --dir_data /datadrive --save test5
 
 #       x3 scale, branch = 1
 #       python main.py --data_train rrl --rrl_data DIV2K --data_test rrl --ext img --scale 3 --n_channel_in 64 --model EDSR --branch_num 1 --half_resblocks --n_resblocks 16 --n_feats 64 --pre_train ../experiment/model/EDSR_baseline_x3.pt --epochs 30 --print_model --dir_data /datadrive --reset
 #       python main.py --data_train rrl --rrl_data DIV2K --data_test rrl --ext img --scale 3 --n_channel_in 64 --model EDSR --branch_num 1 --half_feats --n_resblocks 16 --n_feats 64 --pre_train ../experiment/model/EDSR_baseline_x3.pt --epochs 30 --print_model --dir_data /datadrive --save test3
+#       python main.py --data_train rrl --rrl_data DIV2K --data_test rrl --ext img --scale 3 --n_channel_in 64 --model EDSR --branch_num 1 --half_resblocks --half_feats --n_resblocks 16 --n_feats 64 --pre_train ../experiment/model/EDSR_baseline_x3.pt --epochs 30 --print_model --dir_data /datadrive --save test6
 
 #   Final EDSR scripts
 #       #x4 scale, branch = 1 
