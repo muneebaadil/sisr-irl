@@ -36,17 +36,18 @@ class EDSR(nn.Module):
         # define tail module
         if scale != 1: 
             m_tail = [
-                common.Upsampler(conv, scale, n_feats, act=False),
-                conv(n_feats, args.n_channel_out, kernel_size)
-            ]
+                common.Upsampler(conv, scale, n_feats, act=False)]
         else: 
-            m_tail = [conv(n_feats, args.n_channel_out, kernel_size)]
+            m_tail = []
+        
+        m_reconstruct = [conv(n_feats, args.n_channel_out, kernel_size)]
 
         self.add_mean = common.MeanShift(args.rgb_range, rgb_mean, rgb_std, 1)
 
         self.head = nn.Sequential(*m_head)
         self.body = nn.Sequential(*m_body)
         self.tail = nn.Sequential(*m_tail)
+        self.reconstruct = nn.Sequential(*m_reconstruct)
 
     def forward(self, x):
         if self.is_sub_mean: 
@@ -57,9 +58,11 @@ class EDSR(nn.Module):
         res = self.body(x)
         res += x
 
-        x = self.tail(res)
-	if self.is_sub_mean: 
-	    x = self.add_mean(x)
+        self.featmaps = self.tail(res)
+        x = self.reconstruct(self.featmaps)
+
+        if self.is_sub_mean: 
+            x = self.add_mean(x)
 
         return x 
 

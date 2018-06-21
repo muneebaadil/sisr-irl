@@ -21,8 +21,13 @@ class Model(nn.Module):
         self.n_GPUs = args.n_GPUs
         self.save_models = args.save_models
 
-        module = import_module('model.' + args.model.lower())
-        self.model = module.make_model(args).to(self.device)
+        if not args.enable_rrl:
+            module = import_module('model.' + args.model.lower())
+            self.model = module.make_model(args).to(self.device)
+        else:
+            module = import_module('model.rrl')
+            self.model = module.make_model(args, ckp).to(self.device)
+
         if args.precision == 'half': self.model.half()
 
         if not args.cpu and args.n_GPUs > 1:
