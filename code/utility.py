@@ -66,9 +66,6 @@ class checkpoint():
         _make_dir(self.dir)
         _make_dir(self.dir + '/model')
         _make_dir(self.dir + '/results')
-        _make_dir(self.dir + '/featmaps/X2')
-        _make_dir(self.dir + '/featmaps/X3')
-        _make_dir(self.dir + '/featmaps/X4')
 
         open_type = 'a' if os.path.exists(self.dir + '/log.txt') else 'w'
         self.log_file = open(self.dir + '/log.txt', open_type)
