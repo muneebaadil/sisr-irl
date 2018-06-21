@@ -55,5 +55,6 @@ class RRL(nn.Module):
 
         return out
 
-    def load_state_dict(self): 
-        pass
+    def load_state_dict(self, state_dict, strict=True): 
+        print 'came in loading state dict'
+        self.lower_branches[0].load_state_dict(state_dict, strict)
