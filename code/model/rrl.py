@@ -35,6 +35,7 @@ class RRL(nn.Module):
             args.scale = [1]
             args.is_sub_mean = False
 
+        pre_train = args.pre_train 
         args.pre_train = '.'
         args.n_channel_in = 64
         self.higher_branch = module.make_model(args)
@@ -42,6 +43,8 @@ class RRL(nn.Module):
         for i, branch in enumerate(self.lower_branches):
             self.add_module(str(i), branch)
         self.add_module(str(len(self.lower_branches)), self.higher_branch)
+
+        args.pre_train = pre_train
 
     def forward(self, x): 
         #IMPORTANT: ASSUMING ONLY ONE LOWER BRANCH FOR NOW..
@@ -56,5 +59,4 @@ class RRL(nn.Module):
         return out
 
     def load_state_dict(self, state_dict, strict=True): 
-        print 'came in loading state dict'
         self.lower_branches[0].load_state_dict(state_dict, strict)
