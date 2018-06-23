@@ -14,6 +14,9 @@
 #test rrl dataloader test time
 #python main.py --data_train rrl --rrl_data DIV2K --data_test rrl --cpu --dir_data ~/Documents --ext img --n_val 1 --offset_val 800 --scale 4 --pre_train ../experiment/model/EDSR_baseline_x4.pt --save_results --n_threads 1
 
+#test rrl network
+#python main.py --model EDSR --scale 4 --save EDSR_baseline_x4 --enable_rrl --n_branches 1 --reset --pre_train ../experiment/model/EDSR_baseline_x2.pt --dir_data ~/Documents
+
 
 #DEV DONE; EXPERIMENTS SCRIPTS
 #   Baseline EDSR scripts (testing if halving resblocks is better or halving features is better)
