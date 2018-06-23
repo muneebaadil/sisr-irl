@@ -11,22 +11,24 @@ class RRL(nn.Module):
     def __init__(self, args, ckp, conv=common.default_conv): 
         super(RRL, self).__init__()
 
+        args_ = args
+
         module = import_module('model.' + args.model.lower())
         self.master_branch = module.make_model(args)
 
         if not args.train_jointly: 
-            for param in branch.parameters(): 
+            for param in self.master_branch.parameters(): 
                 param.requires_grad = False
         
-        args.n_channel_in = args.n_feat
-        args.scale = [1]
+        args_.n_channel_in = args.n_feats
+        args_.scale = [1]
         if args.half_feats: 
-            args.n_feats = args.n_feats / 2 
+            args_.n_feats = args.n_feats / 2 
         if args.half_resblocks: 
-            args.n_resblocks = args.n_resblocks / 2
-        args.is_sub_mean = False
+            args_.n_resblocks = args.n_resblocks / 2
+        args_.is_sub_mean = False
 
-        self.recons_branch = module.make_model(args)
+        self.recons_branch = module.make_model(args_)
 
     def forward(self, x): 
         y1 = self.master_branch(x)
