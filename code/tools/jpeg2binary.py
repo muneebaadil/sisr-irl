@@ -33,7 +33,7 @@ for (path, dirs, files) in os.walk(args.pathFrom):
         n = 0
         for fileName in files:
             (idx, ext) = os.path.splitext(fileName)
-            if ext == '.jpeg':
+            if ext == '.png':
                 png = sio.imread(os.path.join(path, fileName))
                 tensor = torch.Tensor(png.astype(float)).byte()
                 if args.split:

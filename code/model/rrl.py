@@ -3,6 +3,7 @@ import torch.nn as nn
 import pdb
 import model
 from importlib import import_module
+from copy import deepcopy
 
 def make_model(args, ckp, parents=False): 
     return RRL(args, ckp)
@@ -11,8 +12,9 @@ class RRL(nn.Module):
     def __init__(self, args, ckp, conv=common.default_conv): 
         super(RRL, self).__init__()
 
-        args_ = args
-
+        args.is_sub_mean = True 
+        args_ = deepcopy(args)
+        
         module = import_module('model.' + args.model.lower())
         self.master_branch = module.make_model(args)
 
@@ -31,12 +33,11 @@ class RRL(nn.Module):
         self.recons_branch = module.make_model(args_)
 
     def forward(self, x): 
-        y1 = self.master_branch(x)
-        y2 = self.recons_branch(self.master_branch.featmaps)
+        self.master_pred = self.master_branch(x)
+        featmaps = self.master_branch.tail.modules().next()._modules['0'].outputs[-1]
+        self.refine_pred = self.recons_branch(featmaps)
 
-        out = y1 + y2
-
-        return out
+        return self.refine_pred
 
     def load_state_dict(self, state_dict, strict=True): 
         self.master_branch.load_state_dict(state_dict, strict)
