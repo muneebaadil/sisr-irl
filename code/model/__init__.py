@@ -37,7 +37,8 @@ class Model(nn.Module):
             ckp.dir,
             pre_train=args.pre_train,
             resume=args.resume,
-            cpu=args.cpu
+            cpu=args.cpu,
+            pre_train2=args.pre_train
         )
         if args.print_model: print(self.model)
 
@@ -106,6 +107,12 @@ class Model(nn.Module):
                 print('Loading model from {}'.format(pre_train))
                 self.get_model().load_state_dict(
                     torch.load(pre_train, **kwargs),
+                    strict=True
+                )
+            if pre_train2 != '.':
+                print('Loading refinement branch from {}'.format(pre_train2))
+                self.get_model().load_state_dict2(
+                    torch.load(pre_train2, **kwargs),
                     strict=True
                 )
         else:

@@ -23,7 +23,7 @@ class RRL(nn.Module):
                 param.requires_grad = False
         
         args_.n_channel_in = args.n_feats
-        args_.scale = [1]
+        args_.scale = [2]
         if args.half_feats: 
             args_.n_feats = args.n_feats / 2 
         if args.half_resblocks: 
@@ -34,10 +34,13 @@ class RRL(nn.Module):
 
     def forward(self, x): 
         self.master_pred = self.master_branch(x)
-        featmaps = self.master_branch.tail.modules().next()._modules['0'].outputs[-1]
+        featmaps = self.master_branch.tail.modules().next()._modules['0'].outputs[0]
         self.refine_pred = self.recons_branch(featmaps)
 
         return self.refine_pred
 
     def load_state_dict(self, state_dict, strict=True): 
         self.master_branch.load_state_dict(state_dict, strict)
+
+    def load_state_dict2(self, state_dict, strict=True):
+        self.recons_branch.load_state_dict(state_dict, strict)

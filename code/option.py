@@ -73,6 +73,8 @@ parser.add_argument('--act', type=str, default='relu',
                     help='activation function')
 parser.add_argument('--pre_train', type=str, default='.',
                     help='pre-trained model directory')
+parser.add_argument('--pre_train2', type=str, default='.',
+                    help='pre-trained refinement branch directory')
 parser.add_argument('--n_resblocks', type=int, default=16,
                     help='number of residual blocks')
 parser.add_argument('--n_feats', type=int, default=64,
