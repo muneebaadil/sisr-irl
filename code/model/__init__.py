@@ -99,14 +99,14 @@ class Model(nn.Module):
                     os.path.join(apath, 'model', 'model_latest.pt'),
                     **kwargs
                 ),
-                strict=False
+                strict=True
             )
         elif resume == 0:
             if pre_train != '.':
                 print('Loading model from {}'.format(pre_train))
                 self.get_model().load_state_dict(
                     torch.load(pre_train, **kwargs),
-                    strict=False
+                    strict=True
                 )
         else:
             self.get_model().load_state_dict(
@@ -114,7 +114,7 @@ class Model(nn.Module):
                     os.path.join(apath, 'model', 'model_{}.pt'.format(resume)),
                     **kwargs
                 ),
-                strict=False
+                strict=True
             )
 
     def forward_chop(self, x, shave=10, min_size=160000):
