@@ -34,8 +34,8 @@ class RRL(nn.Module):
 
     def forward(self, x): 
         self.master_pred = self.master_branch(x)
-        featmaps = self.master_branch.tail.modules().next()._modules['0'].outputs[0]
-        self.refine_pred = self.recons_branch(featmaps)
+        self.featmaps = self.master_branch.tail.modules().next()._modules['0'].outputs[0]
+        self.refine_pred = self.recons_branch(self.featmaps)
 
         return self.refine_pred
 

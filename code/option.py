@@ -5,6 +5,8 @@ parser = argparse.ArgumentParser(description='EDSR and MDSR')
 
 parser.add_argument('--debug', action='store_true',
                     help='Enables debug mode')
+parser.add_argument('--debug_num', type=int, default=1, 
+                    help='debugging session identifier')
 parser.add_argument('--template', default='.',
                     help='You can set various templates in option.py')
 

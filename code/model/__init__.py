@@ -38,7 +38,7 @@ class Model(nn.Module):
             pre_train=args.pre_train,
             resume=args.resume,
             cpu=args.cpu,
-            pre_train2=args.pre_train
+            pre_train2=args.pre_train2
         )
         if args.print_model: print(self.model)
 
@@ -88,7 +88,7 @@ class Model(nn.Module):
                 os.path.join(apath, 'model', 'model_{}.pt'.format(epoch))
             )
 
-    def load(self, apath, pre_train='.', resume=-1, cpu=False):
+    def load(self, apath, pre_train='.', resume=-1, cpu=False, pre_train2='.'):
         if cpu:
             kwargs = {'map_location': lambda storage, loc: storage}
         else:
