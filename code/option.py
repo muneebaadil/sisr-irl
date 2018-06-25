@@ -83,7 +83,7 @@ parser.add_argument('--n_feats', type=int, default=64,
                     help='number of feature maps')
 parser.add_argument('--res_scale', type=float, default=1,
                     help='residual scaling')
-parser.add_argument('--shift_mean', default=True,
+parser.add_argument('--is_sub_mean', default=True,
                     help='subtract pixel mean from the input')
 parser.add_argument('--precision', type=str, default='single',
                     choices=('single', 'half'),

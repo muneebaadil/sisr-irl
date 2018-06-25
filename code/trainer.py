@@ -99,6 +99,7 @@ class Trainer():
                     if self.args.debug: 
                         torch.save(lr, 'test_tensors/lr_tensor_{}.pt'.format(self.args.debug_num))
                         torch.save(hr, 'test_tensors/hr_tensor_{}.pt'.format(self.args.debug_num))
+			torch.save(sr, 'test_tensors/master_pred_{}.pt'.format(self.args.debug_num))
                         torch.save(self.model.model.master_pred, 'test_tensors/master_pred_{}.pt'.format(self.args.debug_num))
                         torch.save(self.model.model.featmaps, 'test_tensors/featmaps_{}.pt'.format(self.args.debug_num))
                         torch.save(self.model.model.refine_pred, 'test_tensors/refine_pred_{}.pt'.format(self.args.debug_num))
