@@ -23,7 +23,7 @@ class RRL(nn.Module):
                 param.requires_grad = False
         
         args_.n_channel_in = args.n_feats
-        args_.scale = [2]
+        args_.scale = [args.scale[0] // 2] 
         if args.half_feats: 
             args_.n_feats = args.n_feats / 2 
         if args.half_resblocks: 

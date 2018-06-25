@@ -49,6 +49,10 @@ class Trainer():
 
             self.optimizer.zero_grad()
             sr = self.model(lr, idx_scale)
+
+	    if self.args.enable_rrl:
+		hr = hr - self.model.model.master_pred
+
             loss = self.loss(sr, hr)
             if loss.item() < self.args.skip_threshold * self.error_last:
                 loss.backward()
@@ -95,6 +99,9 @@ class Trainer():
                         lr = self.prepare([lr])[0]
 
                     sr = self.model(lr, idx_scale)
+
+		    if self.args.enable_rrl:
+			sr = sr + self.model.model.master_pred
 
                     if self.args.debug: 
                         torch.save(lr, 'test_tensors/lr_tensor_{}.pt'.format(self.args.debug_num))
