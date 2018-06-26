@@ -1,4 +1,5 @@
 import torch 
+import torch.nn as nn
 
 class Charbonnier(nn.Module):
     """L1 Charbonnierloss."""

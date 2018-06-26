@@ -28,6 +28,9 @@ class Loss(nn.modules.loss._Loss):
             elif loss_type == 'Charbonnier':
                 module = import_module('loss.charbonnier')
                 loss_function = getattr(module, 'Charbonnier')()
+            elif loss_type == 'GradL1':
+                module = import_module('loss.gradl1')
+                loss_function = getattr(module, 'GradL1')(args.n_channel_out)
             elif loss_type.find('VGG') >= 0:
                 module = import_module('loss.vgg')
                 loss_function = getattr(module, 'VGG')(
