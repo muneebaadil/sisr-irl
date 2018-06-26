@@ -25,7 +25,7 @@ class GradL1(nn.Module):
         self.edges_mag_target = torch.add(torch.pow(v_edges_target,2),
                                     torch.pow(h_edges_target,2))
         
-        out = torch.sum(torch.abs(torch.add(self.edges_mag_target, -self.edges_mag_input)))
+        out = torch.mean(torch.abs(torch.add(self.edges_mag_target, -self.edges_mag_input)))
         
         return out 
     
