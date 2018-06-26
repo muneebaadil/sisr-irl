@@ -30,7 +30,8 @@ class Loss(nn.modules.loss._Loss):
                 loss_function = getattr(module, 'Charbonnier')()
             elif loss_type == 'GradL1':
                 module = import_module('loss.gradl1')
-                loss_function = getattr(module, 'GradL1')(args.n_channel_out)
+                loss_function = getattr(module, 'GradL1')(args.n_channel_out,
+                                                        not args.cpu)
             elif loss_type.find('VGG') >= 0:
                 module = import_module('loss.vgg')
                 loss_function = getattr(module, 'VGG')(
