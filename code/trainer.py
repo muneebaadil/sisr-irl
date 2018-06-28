@@ -124,9 +124,8 @@ class Trainer():
                     if self.args.save_results:
                         self.ckp.save_results(filename, save_list, scale)
                     
-                    if self.args.save_featmaps:
-                        scales = list(scale) if ((scale==2) or (scale==3)) else [2,4]
-                        self.ckp.save_featmaps(filename, featmaps, scales)
+                    if self.args.save_residuals: 
+                        self.ckp.save_residuals(filename, save_list, scale)
 
                 self.ckp.log[-1, idx_scale] = eval_acc / len(self.loader_test)
                 best = self.ckp.log.max(0)

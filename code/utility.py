@@ -66,6 +66,7 @@ class checkpoint():
         _make_dir(self.dir)
         _make_dir(self.dir + '/model')
         _make_dir(self.dir + '/results')
+        _make_dir(self.dir + '/residuals')
 
         open_type = 'a' if os.path.exists(self.dir + '/log.txt') else 'w'
         self.log_file = open(self.dir + '/log.txt', open_type)
@@ -126,11 +127,18 @@ class checkpoint():
             ndarr = normalized.byte().permute(1, 2, 0).cpu().numpy()
             misc.imsave('{}{}.png'.format(filename, p), ndarr)
 
-    def save_featmaps(self, filename, featmaps, scales):
-        for featmap, scale in zip(featmaps, scales):
-            filename_ = '{}/featmaps/X{}/{}.npy'.format(self.dir, scale, filename)
-            featmap_ = featmap.data.cpu()[0].numpy()
-            np.save(filename_,featmap_)
+    def save_residuals(self, filename, save_list, scale): 
+        filename = '{}/residuals/{}_x{}'.format(self.dir, filename, scale)
+        sr, hr = save_list[0], save_list[-1]
+
+        def _prepare(x):
+            normalized = x[0].data.mul(255 / self.args.rgb_range)
+            out = normalized.byte().permute(1,2,0).cpu().numpy()
+            return out 
+
+        ndarr_sr, ndarr_hr = _prepare(sr), _prepare(hr)
+        out = np.abs(ndarr_hr - ndarr_sr).sum(axis=-1)
+        misc.imsave('{}.png'.format(filename), out)
 
 def quantize(img, rgb_range):
     pixel_range = 255 / rgb_range
