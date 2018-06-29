@@ -27,11 +27,13 @@ class _Dense_Block(nn.Module):
 
         self.conv_layers = []
         conv_layer = conv(in_channels, growth_rate, kernel_size)
+        self.add_module('conv{}'.format(1), conv_layer)
         self.conv_layers.append(conv_layer)
 
         next_in_chans = growth_rate
-        for _ in xrange(n_layers-1): 
+        for i in xrange(n_layers-1): 
             conv_layer = conv(next_in_chans, growth_rate, kernel_size)
+            self.add_module('conv{}'.format(i+2), conv_layer)
             self.conv_layers.append(conv_layer)
 
             next_in_chans += growth_rate
@@ -60,8 +62,11 @@ class DenseSkip(nn.Module):
         self.head = nn.Conv2d(in_channels=args.n_channel_in, out_channels=channels,
                              kernel_size=kernel_size,padding=1)
 
-        self.dense_blocks = [_Dense_Block(growth_rate, channels, args.n_layers)
-                             for _ in xrange(n_denseblocks)]
+        self.dense_blocks = []
+        for i in xrange(n_denseblocks): 
+            db = _Dense_Block(growth_rate, channels, args.n_layers)
+            self.add_module('db{}'.format(i+1), db)
+            self.dense_blocks.append(db)
 
         self.bottleneck = nn.Conv2d(in_channels=channels*(n_denseblocks+1), 
                                     out_channels=channels*2, kernel_size=1,
