@@ -43,10 +43,6 @@ class RRL(nn.Module):
             self.add_module('recons_branch' if (i==0) else 'recons_branch_{}'.format(i),branch)
 
     def forward(self, x): 
-        # self.master_pred = self.master_branch(x)
-        # self.featmaps = self.master_branch.tail.modules().next()._modules['0'].outputs[0]
-        # self.refine_pred = self.recons_branch(self.featmaps)
-
         self.master_pred = self.master_branch(x)
         
         for i, branch in enumerate(self.branches): 
@@ -60,8 +56,5 @@ class RRL(nn.Module):
 
         return self.refine_pred
 
-    # def load_state_dict(self, state_dict, strict=True): 
-    #     self.master_branch.load_state_dict(state_dict, strict)
-
-    # def load_state_dict2(self, state_dict, strict=True):
-    #     self.recons_branch.load_state_dict(state_dict, strict)
+    def load_master_state_dict(self, state_dict, strict=True):
+        self.master_branch.load_state_dict(state_dict, strict)

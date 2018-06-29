@@ -38,7 +38,7 @@ class Model(nn.Module):
             pre_train=args.pre_train,
             resume=args.resume,
             cpu=args.cpu,
-            pre_train2=args.pre_train2
+            pre_train2=args.master_branch_pretrain
         )
         if args.print_model: print(self.model)
 
@@ -110,8 +110,8 @@ class Model(nn.Module):
                     strict=True
                 )
             if pre_train2 != '.':
-                print('Loading refinement branch from {}'.format(pre_train2))
-                self.get_model().load_state_dict2(
+                print('Loading master branch from {}'.format(pre_train2))
+                self.get_model().load_master_state_dict(
                     torch.load(pre_train2, **kwargs),
                     strict=True
                 )
