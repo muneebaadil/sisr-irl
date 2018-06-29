@@ -125,8 +125,7 @@ class Upsampler(nn.Sequential):
                     if act: m.append(act())
 
                 elif type=='deconv':
-                    m.append(conv(n_feat, n_feat, 2, 2, padding=0,
-                     bias=bias))
+                    m.append(conv(n_feat,n_feat,2,2,padding=0,bias=bias))
                     if act: m.append(nn.ReLU(True))
 
         elif scale == 3:
