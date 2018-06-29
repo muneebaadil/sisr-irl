@@ -58,6 +58,12 @@ class DenseSkip(nn.Module):
         channels = 128
         n_denseblocks = args.n_denseblocks
         scale = args.scale[0]
+        self.is_sub_mean = args.is_sub_mean
+
+        rgb_mean = (0.4488, 0.4371, 0.4040)
+        rgb_std = (1.0, 1.0, 1.0)
+        self.sub_mean = common.MeanShift(args.rgb_range, rgb_mean, rgb_std)
+        self.add_mean = common.MeanShift(args.rgb_range, rgb_mean, rgb_std, 1)
 
         self.head = nn.Conv2d(in_channels=args.n_channel_in, out_channels=channels,
                              kernel_size=kernel_size,padding=1)
@@ -94,6 +100,9 @@ class DenseSkip(nn.Module):
                     m.bias.data.zero_()
 
     def forward(self, x): 
+        if self.is_sub_mean: 
+            x = self.sub_mean(x)
+
         x = self.act(self.head(x))
         outs = [x]
 
@@ -105,5 +114,8 @@ class DenseSkip(nn.Module):
         x = self.bottleneck(x)        
         x = self.tail(x)
         x = self.reconstruction(x)
+
+        if self.is_sub_mean: 
+            x = self.add_mean(x)
 
         return x
