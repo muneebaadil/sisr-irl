@@ -26,11 +26,11 @@ class RRL(nn.Module):
         for i in xrange(args.n_branches):
 
             args_.n_channel_in = args.n_feats
-            args_.scale = [args.scale[0] // 2] 
+            args_.scale = [args_.scale[0] // 2] 
             if args.half_feats: 
-                args_.n_feats = args.n_feats / 2 
+                args_.n_feats = args_.n_feats / 2 
             if args.half_resblocks: 
-                args_.n_resblocks = args.n_resblocks / 2
+                args_.n_resblocks = args_.n_resblocks / 2
             args_.is_sub_mean = False
 
             branch = module.make_model(args_)

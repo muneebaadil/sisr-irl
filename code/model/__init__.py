@@ -107,7 +107,7 @@ class Model(nn.Module):
                 print('Loading model from {}'.format(pre_train))
                 self.get_model().load_state_dict(
                     torch.load(pre_train, **kwargs),
-                    strict=True
+                    strict=False
                 )
             if pre_train2 != '.':
                 print('Loading master branch from {}'.format(pre_train2))
