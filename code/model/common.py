@@ -55,60 +55,50 @@ class ResBlock(nn.Module):
 
         return res
 class DenseLayer(nn.Module):
-    def __init__(self, conv, n_feat_in, n_feat_out, kernel_size, 
-        bias=True, act=nn.ReLU(True), res_scale=1.): 
+    def __init__(self, conv, n_feat_in, n_feat_out, kernel_size,bias=False): 
 
         super(DenseLayer, self).__init__()
         modules_body = []
-        
-        modules_body.append(conv(n_feat_in, n_feat_in, kernel_size, bias=bias))
-        modules_body.append(act)
-        modules_body.append(conv(n_feat_in, n_feat_out, kernel_size, bias=bias))
+
+        modules_body.append(conv(n_feat_in, n_feat_out, kernel_size,bias=bias))
+        modules_body.append(nn.ReLU(True))
 
         self.body = nn.Sequential(*modules_body)
-        self.res_scale = res_scale
 
     def forward(self, x): 
-        out = self.body(x).mul(self.res_scale)
+        out = self.body(x)
         out = torch.cat((out, x), dim=1)
-
         return out 
 
-class DenseBlock(nn.Module): 
-    def __init__(self, n_layers, growth_rate, conv, kernel_size, bias=True,
-         act=nn.ReLU(True), res_scale=1., denseption=True): 
+class RDB(nn.Module): 
+    def __init__(self, n_feat_in, n_layers, growth_rate, conv, kernel_size,
+                 bias=False): 
         
-        super(DenseBlock, self).__init__()
+        super(RDB, self).__init__()
 
         self.n_layers = n_layers
         self.growth_rate = growth_rate
-        self.res_scale = res_scale
-        self.denseption = denseption
+        self.n_feat_in = n_feat_in 
 
-        feat = growth_rate
+        feat = n_feat_in
         modules_body = []
 
         #dense connections
         for _ in xrange(n_layers): 
-            modules_body.append(DenseLayer(conv, feat, growth_rate, kernel_size,
-             bias, act, res_scale))
+            layer = DenseLayer(conv,feat,growth_rate,kernel_size,False)
+            modules_body.append(layer)
 
             feat += growth_rate
-
-        #transition layer
-        modules_body.append(conv(feat, growth_rate, kernel_size, bias=True))
-
+        LFF = nn.Conv2d(feat, n_feat_in, kernel_size=1, padding=0, bias=False)
+        modules_body.append(LFF)
         self.body = nn.Sequential(*modules_body)
+
         return 
     
     def forward(self, x): 
-        if self.denseption==True: 
-            out = self.body(x[:, :self.growth_rate]).mul(self.res_scale)
-            out = torch.cat((out, x),dim=1)
-        else: 
-            out = self.body(x).mul(self.res_scale)
-        
-        return out 
+        out = self.body(x)
+        out = out + x
+        return out
     
 class Upsampler(nn.Sequential):
     def __init__(self, conv, scale, n_feat, bn=False, act=False, bias=True,
