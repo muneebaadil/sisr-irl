@@ -1,6 +1,7 @@
 import torch 
 import torch.nn as nn 
 import common
+from itertools import izip 
 
 def make_model(args, parent=False):
     return RDN(args)
@@ -21,7 +22,7 @@ class RDN(nn.Module):
 
         self.RDBs = []
         for i in xrange(args.n_denseblocks): 
-            RDB = common.RDB(args.n_feats,args.n_layers,args.growth_rate,conv,kernel_size,False)
+            RDB = common.RDB(args.n_feats,args.n_layers,args.growth_rate,conv,kernel_size,True)
             self.add_module('RDB{}'.format(i+1),RDB)
             self.RDBs.append(RDB)
 
@@ -58,3 +59,16 @@ class RDN(nn.Module):
             out = self.add_mean(out)
 
         return out 
+    
+    def load_state_dict(self, state_dict, strict=True):
+        own_state = self.state_dict()
+        
+        for (k1, p1), (k2, p2) in izip(state_dict.items(), own_state.items()): 
+            if isinstance(p1, nn.Parameter): 
+                p1 = p1.data
+                
+            try: 
+                own_state[k2].copy_(p1) 
+            except Exception: 
+                raise RuntimeError('error')
+                

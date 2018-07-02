@@ -85,11 +85,11 @@ class RDB(nn.Module):
 
         #dense connections
         for _ in xrange(n_layers): 
-            layer = DenseLayer(conv,feat,growth_rate,kernel_size,False)
+            layer = DenseLayer(conv,feat,growth_rate,kernel_size,bias)
             modules_body.append(layer)
 
             feat += growth_rate
-        LFF = nn.Conv2d(feat, n_feat_in, kernel_size=1, padding=0, bias=False)
+        LFF = nn.Conv2d(feat, n_feat_in, kernel_size=1, padding=0, bias=True)
         modules_body.append(LFF)
         self.body = nn.Sequential(*modules_body)
 
