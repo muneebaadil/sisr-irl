@@ -54,11 +54,14 @@ class ResBlock(nn.Module):
         res += x
 
         return res
+
 class DenseLayer(nn.Module):
-    def __init__(self, conv, n_feat_in, n_feat_out, kernel_size,bias=False): 
+    def __init__(self, conv, n_feat_in, n_feat_out, kernel_size,bias=False,
+                to_concat=True): 
 
         super(DenseLayer, self).__init__()
         modules_body = []
+        self.to_concat = to_concat
 
         modules_body.append(conv(n_feat_in, n_feat_out, kernel_size,bias=bias))
         modules_body.append(nn.ReLU(True))
@@ -67,7 +70,8 @@ class DenseLayer(nn.Module):
 
     def forward(self, x): 
         out = self.body(x)
-        out = torch.cat((out, x), dim=1)
+        if self.to_concat: 
+            out = torch.cat((out, x), dim=1)
         return out 
 
 class RDB(nn.Module): 
