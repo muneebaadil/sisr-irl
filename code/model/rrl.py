@@ -14,6 +14,7 @@ class RRL(nn.Module):
 
         args.is_sub_mean = True 
         args_ = deepcopy(args)
+        self.auto_feats = True if (args.model.lower() == 'lapsrn') else False
 
         self.branches = []
         module = import_module('model.' + args.model.lower())
@@ -31,6 +32,7 @@ class RRL(nn.Module):
                 args_.n_feats = args_.n_feats / 2 
             if args.half_resblocks: 
                 args_.n_resblocks = args_.n_resblocks / 2
+                args_.n_layers = args_.n_layers / 2
             args_.is_sub_mean = False
 
             branch = module.make_model(args_)
@@ -46,7 +48,11 @@ class RRL(nn.Module):
         self.master_pred = self.master_branch(x)
         
         for i, branch in enumerate(self.branches): 
-            featmaps = self.master_branch.tail.modules().next()._modules['0'].outputs[i]
+            
+            if self.auto_feats: 
+                featmaps = self.master_branch.features[i]
+            else: 
+                featmaps = self.master_branch.tail.modules().next()._modules['0'].outputs[i]
             result = branch(featmaps)
 
             if not (i==len(self.branches)-1): 

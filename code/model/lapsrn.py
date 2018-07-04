@@ -73,12 +73,15 @@ class LapSRN(nn.Module):
     def forward(self, x):
         fx = self.head(x)
 
+        self.features = []
         for feat,img,res in izip(self.feats_branch,self.images_branch,
                                 self.residuals_branch):
             fx = feat(fx)
             ix = img(x)
             rx = res(fx)
+
             x = rx + ix
+            self.features.append(fx)
 
         return x
 
