@@ -73,6 +73,8 @@ parser.add_argument('--half_resblocks', action='store_true',
                     help='whether half the number of resblocks at each branch')
 parser.add_argument('--act', type=str, default='relu',
                     help='activation function')
+parser.add_argument('--negative_slope', type=float, default=0.2,
+                    help='negative slope parameter for PRelu')
 parser.add_argument('--pre_train', type=str, default='.',
                     help='pre-trained model directory')
 parser.add_argument('--master_branch_pretrain', type=str, default='.',

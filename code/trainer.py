@@ -8,6 +8,8 @@ import torch
 from torch.autograd import Variable
 from tqdm import tqdm
 
+import pdb
+
 class Trainer():
     def __init__(self, args, loader, my_model, my_loss, ckp):
         self.args = args
@@ -99,14 +101,14 @@ class Trainer():
                         lr = self.prepare([lr])[0]
 
                     sr = self.model(lr, idx_scale)
-
-		    if self.args.enable_rrl:
-			sr = sr + self.model.model.master_pred
+                    
+                    if self.args.enable_rrl:
+                        sr = sr + self.model.model.master_pred
 
                     if self.args.debug: 
                         torch.save(lr, 'test_tensors/lr_tensor_{}.pt'.format(self.args.debug_num))
                         torch.save(hr, 'test_tensors/hr_tensor_{}.pt'.format(self.args.debug_num))
-			torch.save(sr, 'test_tensors/master_pred_{}.pt'.format(self.args.debug_num))
+                        torch.save(sr, 'test_tensors/master_pred_{}.pt'.format(self.args.debug_num))
                         torch.save(self.model.model.master_pred, 'test_tensors/master_pred_{}.pt'.format(self.args.debug_num))
                         torch.save(self.model.model.featmaps, 'test_tensors/featmaps_{}.pt'.format(self.args.debug_num))
                         torch.save(self.model.model.refine_pred, 'test_tensors/refine_pred_{}.pt'.format(self.args.debug_num))
