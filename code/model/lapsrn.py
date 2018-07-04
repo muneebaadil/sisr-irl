@@ -63,7 +63,8 @@ class LapSRN(nn.Module):
                                              kernel_size=4, stride=2, padding=1,
                                              bias=False)
             else: 
-                img_branch = nn.Sequential()
+                img_branch = nn.Conv2d(in_channels=args.n_channel_in, kernel_size=kernel_size,
+                                       out_channels=args.n_channel_out, stride=1,padding=1,bias=True)
 
             res_branch = nn.Conv2d(in_channels=args.n_feats, out_channels=args.n_channel_out,
                                     kernel_size=kernel_size,stride=1,padding=1,bias=False)
