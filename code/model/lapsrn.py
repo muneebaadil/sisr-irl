@@ -7,7 +7,7 @@ def make_model(args):
     return LapSRN(args)
 
 class Conv_Block(nn.Module): 
-    def __init__(self, n_layers, n_feats, negative_slope, kernel_size):
+    def __init__(self, n_layers, n_feats, negative_slope, kernel_size, upsample=True):
         super(Conv_Block, self).__init__()
         body = []
 
@@ -17,11 +17,12 @@ class Conv_Block(nn.Module):
             act = nn.LeakyReLU(negative_slope=negative_slope, inplace=True)
             body.extend([layer,act])
 
-        upsample = nn.ConvTranspose2d(in_channels=n_feats, out_channels=n_feats,
-                                     kernel_size=4, stride=2, padding=1,bias=False)
-        act = nn.LeakyReLU(negative_slope, inplace=True)
-
-        body.extend([upsample, act])
+        if upsample: 
+            upsampled = nn.ConvTranspose2d(in_channels=n_feats, out_channels=n_feats,
+                                        kernel_size=4, stride=2, padding=1,bias=False)
+            act = nn.LeakyReLU(negative_slope, inplace=True)
+            body.extend([upsampled, act])
+            
         self.body = nn.Sequential(*body)
 
     def forward(self, x): 
@@ -43,7 +44,7 @@ class LapSRN(nn.Module):
         super(LapSRN, self).__init__()
 
         kernel_size = 3 
-        scale = args.scale[0]
+        self.scale = args.scale[0]
         
         head = [nn.Conv2d(in_channels=args.n_channel_in, out_channels=args.n_feats, 
                         kernel_size=kernel_size, stride=1, padding=1, bias=False),
@@ -52,13 +53,18 @@ class LapSRN(nn.Module):
 
         self.feats_branch, self.images_branch, self.residuals_branch = [], [], []
 
-        for i in xrange(int(math.log(scale, 2))): 
+        n_iters = 1 if (self.scale==1) else int(math.log(self.scale, 2))
+        for i in xrange(n_iters): 
             feat_branch = Conv_Block(args.n_layers, args.n_feats, args.negative_slope,
-                                        kernel_size)
-            img_branch = nn.ConvTranspose2d(in_channels=args.n_channel_in,
+                                        kernel_size, upsample=not(self.scale==1))
+            if not (self.scale==1):
+                img_branch = nn.ConvTranspose2d(in_channels=args.n_channel_in,
                                              out_channels=args.n_channel_out,
                                              kernel_size=4, stride=2, padding=1,
                                              bias=False)
+            else: 
+                img_branch = nn.Sequential()
+
             res_branch = nn.Conv2d(in_channels=args.n_feats, out_channels=args.n_channel_out,
                                     kernel_size=kernel_size,stride=1,padding=1,bias=False)
             
