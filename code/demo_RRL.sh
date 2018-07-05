@@ -45,12 +45,25 @@
 
 #3. LapSRN EXPERIMENTS 
 #3.1. Lap SRN x2 model 
-python main.py --model LapSRN --n_feats 64 --n_layers 10 --enable_rrl --n_branches 1 --half_resblocks --ext bin --n_val 10 --scale 2 --master_branch_pretrain ../experiment/model/LapSRN_x2.pt --dir_data /datadrive/ --epochs 50 --print_model --n_channel_in 1 --n_channel_out 1 --save final_models/LapSRN/x2/
+#python main.py --model LapSRN --n_feats 64 --n_layers 10 --enable_rrl --n_branches 1 --half_resblocks --ext bin --n_val 10 --scale 2 --master_branch_pretrain ../experiment/model/LapSRN_x2.pt --dir_data /datadrive/ --epochs 50 --print_model --n_channel_in 1 --n_channel_out 1 --save final_models/LapSRN/x2/
 
 #3.2. Lap SRN x4 model
 #3.2.1. 1st Branch
 #python main.py --model LapSRN --n_feats 64 --n_layers 10 --enable_rrl --n_branches 1 --half_resblocks --ext bin --n_val 10 --scale 4 --master_branch_pretrain ../experiment/model/LapSRN_x4.pt --dir_data /datadrive/ --epochs 50 --print_model --n_channel_in 1 --n_channel_out 1 --save final_models/LapSRN/x4_b1
 
 #3.2.2. 2nd Branch
-#add script here
-python main.py --model LapSRN --n_feats 64 --n_layers 10 --enable_rrl --n_branches 2 --half_resblocks --ext bin --n_val 10 --scale 4 --pre_train ../experiment/final_models/LapSRN/x4_b1/model/model_best.pt --dir_data /datadrive/ --epochs 50 --print_model --n_channel_in 1 --n_channel_out 1 --save final_models/LapSRN/x4_b2
+#python main.py --model LapSRN --n_feats 64 --n_layers 10 --enable_rrl --n_branches 2 --half_resblocks --ext bin --n_val 10 --scale 4 --pre_train ../experiment/final_models/LapSRN/x4_b1/model/model_best.pt --dir_data /datadrive/ --epochs 50 --print_model --n_channel_in 1 --n_channel_out 1 --save final_models/LapSRN/x4_b2
+
+#4. RDN Experiments
+#4.1. RDN x2 model 
+#python main.py --model RDN --n_denseblocks 16 --n_layers 8 --growth_rate 64 --n_feats 64 --enable_rrl --n_branches 1 --half_resblocks --ext bin --n_val 10 --scale 2 --master_branch_pretrain ../experiment/model/RDN_x2.pt --dir_data /datadrive/ --epochs 50 --print_model --save final_models/RDN/x2/
+
+#4.2. RDN x3 model
+#python main.py --model RDN --n_denseblocks 16 --n_layers 8 --growth_rate 64 --n_feats 64 --enable_rrl --n_branches 1 --half_resblocks --ext bin --n_val 10 --scale 3 --master_branch_pretrain ../experiment/model/RDN_x3.pt --dir_data /datadrive/ --epochs 50 --print_model --save final_models/RDN/x3/
+
+#4.3. RDN x4 model
+#4.3.1. 1st branch
+#python main.py --model RDN --n_denseblocks 16 --n_layers 8 --growth_rate 64 --n_feats 64 --enable_rrl --n_branches 1 --half_resblocks --ext bin --n_val 10 --scale 4 --master_branch_pretrain ../experiment/model/RDN_x4.pt --dir_data /datadrive/ --epochs 50 --print_model --save final_models/RDN/x4_b1/
+
+#4.3.2. 2nd branch
+#python main.py --model RDN --n_denseblocks 16 --n_layers 8 --growth_rate 64 --n_feats 64 --enable_rrl --n_branches 2 --half_resblocks --ext bin --n_val 10 --scale 4 --pre_train ../experiment/final_models/RDN/x4_b1/model/model_best.pt --dir_data /datadrive/ --epochs 50 --print_model --save final_models/RDN/x4_b2/

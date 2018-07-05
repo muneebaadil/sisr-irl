@@ -32,7 +32,12 @@ class RRL(nn.Module):
                 args_.n_feats = args_.n_feats / 2 
             if args.half_resblocks: 
                 args_.n_resblocks = args_.n_resblocks / 2
-                args_.n_layers = args_.n_layers / 2
+
+                if args.model.lower() == 'rdn': 
+                    args_.n_denseblocks = args_.n_denseblocks / 2 
+                else: 
+                    args_.n_layers = args_.n_layers / 2
+                    
             args_.is_sub_mean = False
 
             branch = module.make_model(args_)
