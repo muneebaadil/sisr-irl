@@ -64,6 +64,9 @@ class RDN(nn.Module):
         own_state = self.state_dict()
         
         for (k1, p1), (k2, p2) in izip(state_dict.items(), own_state.items()): 
+            if (k1.split('.')[0] == '0') or (k1.split('.')[0] == '5'): #do not copy shift mean layer
+                continue
+
             if isinstance(p1, nn.Parameter): 
                 p1 = p1.data
                 

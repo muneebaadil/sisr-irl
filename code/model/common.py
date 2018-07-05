@@ -85,23 +85,34 @@ class RDB(nn.Module):
         self.n_feat_in = n_feat_in 
 
         feat = n_feat_in
-        modules_body = []
+        self.dense_layers = []
 
         #dense connections
-        for _ in xrange(n_layers): 
-            layer = DenseLayer(conv,feat,growth_rate,kernel_size,bias)
-            modules_body.append(layer)
+        for i in xrange(n_layers): 
+            layer = conv(feat,growth_rate,kernel_size,bias=bias)
+            act = nn.ReLU(True)
+            dense_layer = nn.Sequential(*[layer, act])
+            
+            self.add_module('dense_layer{}'.format(i+1),dense_layer) 
+            self.dense_layers.append(dense_layer)
 
             feat += growth_rate
-        LFF = nn.Conv2d(feat, n_feat_in, kernel_size=1, padding=0, bias=True)
-        modules_body.append(LFF)
-        self.body = nn.Sequential(*modules_body)
-
+            
+        self.LFF = nn.Conv2d(feat, n_feat_in, kernel_size=1, padding=0, bias=True)
         return 
     
     def forward(self, x): 
-        out = self.body(x)
-        out = out + x
+        _x = x
+
+        feats = [x]
+
+        for dl in self.dense_layers: 
+            o = dl(x)
+            x = torch.cat([x,o],dim=1)
+        
+        out = self.LFF(x)
+        out = out + _x
+        
         return out
     
 class Upsampler(nn.Sequential):
