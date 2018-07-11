@@ -122,11 +122,13 @@ class SRData(data.Dataset):
 
     def _get_patch(self, lr, hr):
         patch_size = self.args.patch_size
+        patch_strategy = self.args.patch_strategy
         scale = self.scale[self.idx_scale]
         multi_scale = len(self.scale) > 1
         if self.train:
             lr, hr = common.get_patch(
-                lr, hr, patch_size, scale, multi_scale=multi_scale
+                lr, hr, patch_size, scale, multi_scale=multi_scale,
+                strategy=patch_strategy
             )
             lr, hr = common.augment([lr, hr])
             lr = common.add_noise(lr, self.args.noise)
