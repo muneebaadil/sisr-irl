@@ -125,6 +125,10 @@ class checkpoint():
         for v, p in zip(save_list, postfix):
             normalized = v[0].data.mul(255 / self.args.rgb_range)
             ndarr = normalized.byte().permute(1, 2, 0).cpu().numpy()
+            
+            if ndarr.shape[-1] == 1: 
+                    ndarr = ndarr[:,:,0] 
+                    
             misc.imsave('{}{}.png'.format(filename, p), ndarr)
 
     def save_residuals(self, filename, save_list, scale): 
