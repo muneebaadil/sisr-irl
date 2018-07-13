@@ -100,9 +100,7 @@ class Trainer():
                     sr = self.model(lr, idx_scale)
                     sr = utility.quantize(sr, self.args.rgb_range)
 
-                    save_list = [sr]
-                    save_list2 = self.model.model.branch_outputs
-                    
+                    save_list = [sr]                    
                     if not no_eval:
                         eval_acc += utility.calc_psnr(
                             sr, hr, scale, self.args.rgb_range,
@@ -117,7 +115,8 @@ class Trainer():
                         self.ckp.save_residuals(filename, save_list, scale)
 
                     if self.args.save_branches: 
-                        self.ckp.save_branches(filename, save_list2, scale)
+                        self.ckp.save_branches(filename, self.model.model.branch_outputs
+                                            ,scale)
 
                 self.ckp.log[-1, idx_scale] = eval_acc / len(self.loader_test)
                 best = self.ckp.log.max(0)

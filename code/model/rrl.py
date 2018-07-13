@@ -16,6 +16,7 @@ class RRL(nn.Module):
         args.is_sub_mean = True 
         args_ = deepcopy(args)
         self.auto_feats = True if (args.model.lower() == 'lapsrn') else False
+        self.learn_directly = args.learn_directly
 
         self.branches = []
         module = import_module('model.' + args.model.lower())
@@ -61,7 +62,8 @@ class RRL(nn.Module):
                 featmaps = self.master_branch.tail.modules().next()._modules['0'].outputs[i]
             self.branch_outputs.append(branch(featmaps))
 
-        out = reduce(lambda x,y: x+y, self.branch_outputs)
+        out = reduce(lambda x,y: x+y, self.branch_outputs) \
+                if (not self.learn_directly) else self.branch_outputs[-1]
         return out 
 
     def load_master_state_dict(self, state_dict, strict=True):
