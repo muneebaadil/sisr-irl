@@ -161,6 +161,8 @@ parser.add_argument('--print_every', type=int, default=100,
                     help='how many batches to wait before logging training status')
 parser.add_argument('--save_results', action='store_true',
                     help='save output results')
+parser.add_argument('--save_branches', action='store_true',
+                    help='save outputs of each branches in IRL setup')
 parser.add_argument('--save_residuals', action='store_true',
                     help='save residuals of output results')
 

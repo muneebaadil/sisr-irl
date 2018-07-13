@@ -67,6 +67,7 @@ class checkpoint():
         _make_dir(self.dir + '/model')
         _make_dir(self.dir + '/results')
         _make_dir(self.dir + '/residuals')
+        _make_dir(self.dir + '/branches')
 
         open_type = 'a' if os.path.exists(self.dir + '/log.txt') else 'w'
         self.log_file = open(self.dir + '/log.txt', open_type)
@@ -138,11 +139,35 @@ class checkpoint():
         def _prepare(x):
             normalized = x[0].data.mul(1. / self.args.rgb_range)
             out = normalized.permute(1,2,0).cpu().numpy()
+            
+            if out.shape[-1] == 1: 
+                out = out[:,:,0]
+
             return out 
 
         ndarr_sr, ndarr_hr = _prepare(sr), _prepare(hr)
         out = np.abs(ndarr_hr - ndarr_sr)
         misc.imsave('{}.png'.format(filename), out)
+
+    def save_branches(self, filename, save_list, scale): 
+        filename = '{}/branches/{}_x{}'.format(self.dir, filename, scale)
+        
+        def _prepare(x, residual):
+            normalized = x[0].data.mul(1. / self.args.rgb_range)
+            if not residual: 
+                out = normalized.permute(1,2,0).cpu().numpy()
+            else: 
+                out = np.abs(normalized.permute(1,2,0).cpu().numpy())
+
+            if out.shape[-1] == 1: 
+                out = out[:,:,0]
+            return out 
+
+        for i, branch_output in enumerate(save_list): 
+            ndarr = _prepare(branch_output, not (i==0))
+            misc.imsave('{}{}.png'.format(filename, '_branch{}'.format(i)), ndarr)
+
+        return 
 
 def quantize(img, rgb_range):
     pixel_range = 255 / rgb_range
