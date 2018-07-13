@@ -32,6 +32,9 @@ class Loss(nn.modules.loss._Loss):
                 module = import_module('loss.gradl1')
                 loss_function = getattr(module, 'GradL1')(args.n_channel_out,
                                                         not args.cpu)
+            elif loss_type == 'WeightedMSE': 
+                module = import_module('loss.weightedmse')
+                loss_function = getattr(module, 'WeightedMSE')()
             elif loss_type.find('VGG') >= 0:
                 module = import_module('loss.vgg')
                 loss_function = getattr(module, 'VGG')(
