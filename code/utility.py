@@ -136,12 +136,12 @@ class checkpoint():
         sr, hr = save_list[0], save_list[-1]
 
         def _prepare(x):
-            normalized = x[0].data.mul(255 / self.args.rgb_range)
-            out = normalized.byte().permute(1,2,0).cpu().numpy()
+            normalized = x[0].data.mul(1. / self.args.rgb_range)
+            out = normalized.permute(1,2,0).cpu().numpy()
             return out 
 
         ndarr_sr, ndarr_hr = _prepare(sr), _prepare(hr)
-        out = np.abs(ndarr_hr - ndarr_sr).sum(axis=-1)
+        out = np.abs(ndarr_hr - ndarr_sr)
         misc.imsave('{}.png'.format(filename), out)
 
 def quantize(img, rgb_range):
