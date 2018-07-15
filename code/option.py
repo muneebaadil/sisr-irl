@@ -53,6 +53,8 @@ parser.add_argument('--n_channel_in', type=int, default=3,
                     help='number of input channels for network')
 parser.add_argument('--n_channel_out', type=int, default=3,
                     help='number of channels for network to output')
+parser.add_argument('--color_space', type=str, default='rgb',
+                    help='color space of input/output patches')
 parser.add_argument('--noise', type=str, default='.',
                     help='Gaussian noise std.')
 parser.add_argument('--chop', action='store_true',
@@ -100,6 +102,8 @@ parser.add_argument('--is_sub_mean', default=True,
 parser.add_argument('--precision', type=str, default='single',
                     choices=('single', 'half'),
                     help='FP precision for test (single | half)')
+parser.add_argument('--train_ends_only', action='store_true',
+                    help='train head and tail of models only')
 
 # Training specifications
 parser.add_argument('--reset', action='store_true',

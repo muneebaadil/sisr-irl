@@ -40,6 +40,12 @@ class Model(nn.Module):
             cpu=args.cpu,
             pre_train2=args.master_branch_pretrain
         )
+
+        if args.train_ends_only: 
+            for n,p in self.model.named_parameters(): 
+                if not ((n.find('head') >= 0) or (n.find('tail') >= 0)): 
+                    p.requires_grad = False
+                
         if args.print_model: print(self.model)
 
     def forward(self, x, idx_scale):

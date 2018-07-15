@@ -65,7 +65,7 @@ def get_patch(img_in, img_tar, patch_size, scale, multi_scale=False,
 
     return img_in, img_tar
 
-def set_channel(l, n_channel):
+def set_channel(l, n_channel, color_space):
     def _set_channel(img):
         if img.ndim == 2:
             img = np.expand_dims(img, axis=2)
@@ -75,6 +75,9 @@ def set_channel(l, n_channel):
             img = np.expand_dims(sc.rgb2ycbcr(img)[:, :, 0], 2)
         elif n_channel == 3 and c == 1:
             img = np.concatenate([img] * n_channel, 2)
+
+        if color_space == 'ycbcr': 
+            img = sc.rgb2ycbcr(img)
 
         return img
 
