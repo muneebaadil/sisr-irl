@@ -76,7 +76,7 @@ def set_channel(l, n_channel, color_space):
         elif n_channel == 3 and c == 1:
             img = np.concatenate([img] * n_channel, 2)
 
-        if color_space == 'ycbcr': 
+        if color_space == 'ycbcr':
             img = sc.rgb2ycbcr(img)
 
         return img

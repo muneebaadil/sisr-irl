@@ -9,6 +9,8 @@ from torch.autograd import Variable
 from tqdm import tqdm
 
 import pdb
+import numpy as np 
+import skimage.color as sc
 
 class Trainer():
     def __init__(self, args, loader, my_model, my_loss, ckp):
@@ -98,7 +100,17 @@ class Trainer():
                         lr = self.prepare([lr])[0]
 
                     sr = self.model(lr, idx_scale)
-                    sr = utility.quantize(sr, self.args.rgb_range)
+
+                    if self.args.color_space.lower() == 'ycbcr': 
+                        sr = sc.ycbcr2rgb(sr.cpu().numpy().transpose(2,3,0,1).astype(np.float64))
+                        hr = sc.ycbcr2rgb(hr.cpu().numpy().transpose(2,3,0,1).astype(np.float64))
+                        lr = sc.ycbcr2rgb(lr.cpu().numpy().transpose(2,3,0,1).astype(np.float64))
+
+                        sr = torch.Tensor(sr).permute(2,3,0,1) * self.args.rgb_range 
+                        hr = torch.Tensor(hr).permute(2,3,0,1) * self.args.rgb_range 
+                        lr = torch.Tensor(lr).permute(2,3,0,1) * self.args.rgb_range
+
+                    sr = utility.quantize(sr,pixel_range=255/self.args.rgb_range)
 
                     save_list = [sr]                    
                     if not no_eval:
