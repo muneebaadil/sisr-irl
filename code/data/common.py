@@ -65,8 +65,8 @@ def get_patch(img_in, img_tar, patch_size, scale, multi_scale=False,
 
     return img_in, img_tar
 
-def set_channel(l, n_channel):
-    def _set_channel(img):
+def set_channel(l, n_channel_in, n_channel_out):
+    def _set_channel(img, n_channel):
         if img.ndim == 2:
             img = np.expand_dims(img, axis=2)
 
@@ -78,7 +78,7 @@ def set_channel(l, n_channel):
 
         return img
 
-    return [_set_channel(_l) for _l in l]
+    return [_set_channel(l[0], n_channel_in), _set_channel(l[1], n_channel_out)]
 
 def np2Tensor(l, rgb_range):
     def _np2Tensor(img):

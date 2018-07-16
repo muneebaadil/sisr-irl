@@ -89,8 +89,8 @@ class SRData(data.Dataset):
         lr, hr, filename = self._load_file(idx)
         lr, hr = self._get_patch(lr, hr)
 
-        if self.args.n_channel_in == self.args.n_channel_out: 
-            lr, hr = common.set_channel([lr, hr], self.args.n_channel_in)
+        lr, hr = common.set_channel([lr, hr], self.args.n_channel_in, 
+                                    self.args.n_channel_out)
             
         lr_tensor, hr_tensor = common.np2Tensor([lr, hr], self.args.rgb_range)
         return lr_tensor, hr_tensor, filename
