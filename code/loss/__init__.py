@@ -80,7 +80,7 @@ class Loss(nn.modules.loss._Loss):
 
         device = torch.device('cpu' if args.cpu else 'cuda')
         self.loss_module.to(device)
-        self.intensity_conv.to(device)
+        if not args.cpu: self.intensity_conv = self.intensity_conv.cuda()
 
         if args.precision == 'half': self.loss_module.half()
         if not args.cpu and args.n_GPUs > 1:
@@ -94,10 +94,8 @@ class Loss(nn.modules.loss._Loss):
         losses = []
 
         if self.intensity_loss:
-            def _convert(x):
-                return x.mul(self.intensity_conv).sum(dim=1,keepdim=True)
-            sr = _convert(sr)
-            hr = _convert(hr)
+            sr = nn.functional.conv2d(sr, self.intensity_conv)
+            hr = nn.functional.conv2d(hr, self.intensity_conv)
             
         for i, l in enumerate(self.loss):
             if l['function'] is not None:
