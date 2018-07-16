@@ -169,8 +169,9 @@ class checkpoint():
 
         return 
 
-def quantize(img, clamp_min=0, clamp_max=255, pixel_range=1):
-    return img.mul(pixel_range).clamp(clamp_min, clamp_max).round().div(pixel_range)
+def quantize(img, rgb_range):
+    pixel_range = 255 / rgb_range
+    return img.mul(pixel_range).clamp(0, 255).round().div(pixel_range)
 
 def calc_psnr(sr, hr, scale, rgb_range, benchmark=False):
     diff = (sr - hr).data.div(rgb_range)
