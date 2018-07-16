@@ -11,6 +11,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+import pdb
+
 class Loss(nn.modules.loss._Loss):
     def __init__(self, args, ckp):
         super(Loss, self).__init__()
@@ -19,6 +21,18 @@ class Loss(nn.modules.loss._Loss):
         self.n_GPUs = args.n_GPUs
         self.loss = []
         self.loss_module = nn.ModuleList()
+        self.intensity_loss = args.intensity_loss
+
+        if args.intensity_loss:
+            self.intensity_conv = torch.zeros((1,3,1,1),requires_grad=False)
+            if args.rgb_range == 255: 
+                self.intensity_conv[0, 0, 0, 0] = 0.299
+                self.intensity_conv[0, 1, 0, 0] = 0.587
+                self.intensity_conv[0, 2, 0, 0] = 0.114
+            elif args.rgb_range == 1: 
+                raise NotImplementedError()
+            
+
         for loss in args.loss.split('+'):
             weight, loss_type = loss.split('*')
             if loss_type == 'MSE':
@@ -68,6 +82,8 @@ class Loss(nn.modules.loss._Loss):
 
         device = torch.device('cpu' if args.cpu else 'cuda')
         self.loss_module.to(device)
+        self.intensity_conv.to(device)
+
         if args.precision == 'half': self.loss_module.half()
         if not args.cpu and args.n_GPUs > 1:
             self.loss_module = nn.DataParallel(
@@ -78,6 +94,15 @@ class Loss(nn.modules.loss._Loss):
 
     def forward(self, sr, hr):
         losses = []
+
+        pdb.set_trace() 
+
+        if self.intensity_loss:
+            def _convert(x):
+                return x.mul(self.intensity_conv).sum(dim=1,keepdim=True)
+            sr = _convert(sr)
+            hr = _convert(hr)
+            
         for i, l in enumerate(self.loss):
             if l['function'] is not None:
                 loss = l['function'](sr, hr)
