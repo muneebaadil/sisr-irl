@@ -16,14 +16,8 @@ class EDSR(nn.Module):
         act = nn.ReLU(True)
         self.is_sub_mean = args.is_sub_mean
         
-        if args.color_space.lower() == 'rgb': 
-            rgb_mean = (0.4488, 0.4371, 0.4040)
-            rgb_std = (1.0, 1.0, 1.0)
-            
-        elif args.color_space.lower() == 'ycbcr': 
-            rgb_mean = (0.43529412, 0.48627451, 0.50980392)
-            rgb_std = (0.92156863, 0.50196078, 0.50196078)
-
+        rgb_mean = (0.4488, 0.4371, 0.4040)
+        rgb_std = (1.0, 1.0, 1.0)
         self.sub_mean = common.MeanShift(args.rgb_range, rgb_mean, rgb_std)
         
         # define head module
