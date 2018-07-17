@@ -20,7 +20,7 @@ class Model(nn.Module):
         self.n_GPUs = args.n_GPUs
         self.save_models = args.save_models
 
-        if not args.enable_rrl:
+        if not args.enable_branches:
             module = import_module('model.' + args.model.lower())
             self.model = module.make_model(args).to(self.device)
         else:

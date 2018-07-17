@@ -63,7 +63,7 @@ parser.add_argument('--model', default='EDSR',
                     help='model name')
 parser.add_argument('--branch_num', type=int, default=1,
                     help='branch number for RRL')
-parser.add_argument('--enable_rrl', action='store_true',
+parser.add_argument('--enable_branches', action='store_true',
                     help='repetitive residual learning using sequential branches')
 parser.add_argument('--n_branches', type=int, default=1,
                     help='number of sequential branches to train')
