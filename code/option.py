@@ -63,14 +63,15 @@ parser.add_argument('--model', default='EDSR',
                     help='model name')
 parser.add_argument('--branch_num', type=int, default=1,
                     help='branch number for RRL')
-parser.add_argument('--enable_rrl', action='store_true',
+parser.add_argument('--enable_branches', action='store_true',
                     help='repetitive residual learning using sequential branches')
 parser.add_argument('--n_branches', type=int, default=1,
                     help='number of sequential branches to train')
 parser.add_argument('--train_jointly', action='store_true',
                     help='whether to train branches jointly or not')
-parser.add_argument('--learn_directly', action='store_true',
-                    help='learn HR image directly i.e without residuals')
+parser.add_argument('--branch_label', type=str, default='residual',
+                    help='whether to predict HR (i.e b0+b1=gt) or \
+                    residuals (i.e b1=gt-b0)')
 parser.add_argument('--half_feats', action='store_true', 
                     help='whether half the number of feats at each branch')
 parser.add_argument('--half_resblocks', action='store_true',

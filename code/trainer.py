@@ -8,6 +8,8 @@ import torch
 from torch.autograd import Variable
 from tqdm import tqdm
 
+from functools import reduce
+
 class Trainer():
     def __init__(self, args, loader, my_model, my_loss, ckp):
         self.args = args
@@ -48,7 +50,10 @@ class Trainer():
             timer_model.tic()
 
             self.optimizer.zero_grad()
-            sr = self.model(lr, idx_scale)
+            sr = self.model(lr, idx_scale, True)
+
+            if (self.args.branch_label.lower() == 'residual') and (self.args.enable_branches): 
+                hr = hr - reduce(lambda x,y: x+y, self.model.model.branch_outputs[:-1])
 
             loss = self.loss(sr, hr)
             if loss.item() < self.args.skip_threshold * self.error_last:
