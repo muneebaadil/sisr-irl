@@ -1,3 +1,16 @@
+#UPSAMPLING TEST
+#1. EDSRb 
+#python main.py --model EDSR --scale 2 --enable_rrl --half_resblocks --n_branches 1 --learn_directly --reset --master_branch_pretrain ../experiment/model/EDSR_baseline_x2.pt --dir_data /datadrive/ --ext bin --n_val 10 --epochs 100 --lr_decay 50 --save learn_directly/EDSRb_x2
+
+#2. LapSRN
+#python main.py --model LapSRN --n_feats 64 --n_layers 10 --enable_rrl --n_branches 1 --half_resblocks --learn_directly --ext bin --n_val 10 --scale 2 --master_branch_pretrain ../experiment/model/LapSRN_x2.pt --dir_data /datadrive/ --epochs 100 --lr_decay 50 --n_channel_in 1 --n_channel_out 1 --save learn_directly/LapSRN_x2
+
+#3. EDSR 
+#python main.py --model EDSR --n_resblocks 32 --n_feats 256 --res_scale 0.1 --scale 2 --enable_rrl --half_resblocks --n_branches 1 --learn_directly --reset --master_branch_pretrain ../experiment/model/EDSR_x2.pt --dir_data /datadrive/ --ext bin --n_val 10 --epochs 100 --lr_decay 50 --save learn_directly/EDSR_x2
+
+#4. RDN
+#python main.py --model RDN --n_denseblocks 16 --n_layers 8 --growth_rate 64 --n_feats 64 --enable_rrl --n_branches 1 --half_resblocks --learn_directly --ext bin --n_val 10 --scale 2 --master_branch_pretrain ../experiment/model/RDN_x2.pt --dir_data /datadrive/ --epochs 100 --lr_decay 50 --save learn_directly/RDN_x2
+
 #1. HALVING EXPERIMENTS
 #1.1. scale 4
 #1.1.1. half_both
