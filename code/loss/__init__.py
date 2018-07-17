@@ -80,7 +80,7 @@ class Loss(nn.modules.loss._Loss):
 
         device = torch.device('cpu' if args.cpu else 'cuda')
         self.loss_module.to(device)
-        if not args.cpu: self.intensity_conv = self.intensity_conv.cuda()
+        #if not args.cpu: self.intensity_conv = self.intensity_conv.cuda()
 
         if args.precision == 'half': self.loss_module.half()
         if not args.cpu and args.n_GPUs > 1:

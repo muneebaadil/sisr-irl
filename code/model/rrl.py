@@ -12,7 +12,6 @@ class RRL(nn.Module):
     def __init__(self, args, ckp, conv=common.default_conv): 
         super(RRL, self).__init__()
 
-        args.is_sub_mean = True 
         args_ = deepcopy(args)
         self.auto_feats = True if (args.model.lower() == 'lapsrn') else False
         self.learn_directly = args.learn_directly
