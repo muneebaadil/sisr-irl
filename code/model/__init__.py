@@ -19,6 +19,7 @@ class Model(nn.Module):
         self.device = torch.device('cpu' if args.cpu else 'cuda')
         self.n_GPUs = args.n_GPUs
         self.save_models = args.save_models
+        self.enable_branches = args.enable_branches
 
         if not args.enable_branches:
             module = import_module('model.' + args.model.lower())
@@ -41,11 +42,16 @@ class Model(nn.Module):
         )
         if args.print_model: print(self.model)
 
-    def forward(self, x, idx_scale):
+    def forward(self, x, idx_scale, train=False):
         self.idx_scale = idx_scale
         target = self.get_model()
         if hasattr(target, 'set_scale'):
             target.set_scale(idx_scale)
+
+        if self.enable_branches: 
+            kwargs = {'train':train}
+        else: 
+            kwargs = {}
 
         if self.self_ensemble and not self.training:
             if self.chop:
@@ -55,9 +61,9 @@ class Model(nn.Module):
 
             return self.forward_x8(x, forward_function)
         elif self.chop and not self.training:
-            return self.forward_chop(x)
+            return self.forward_chop(x, **kwargs)
         else:
-            return self.model(x)
+            return self.model(x, **kwargs)
 
     def get_model(self):
         if self.n_GPUs == 1:
@@ -123,7 +129,7 @@ class Model(nn.Module):
                 strict=True
             )
 
-    def forward_chop(self, x, shave=10, min_size=160000):
+    def forward_chop(self, x, shave=10, min_size=160000, train=False):
 
         def _join(sr_list,x,b,c,h,w,h_half,w_half,h_size,w_size): 
             output = x.new(b, c, h, w)
@@ -153,11 +159,11 @@ class Model(nn.Module):
             sr_list = []
             for i in range(0, 4, n_GPUs):
                 lr_batch = torch.cat(lr_list[i:(i + n_GPUs)], dim=0)
-                sr_batch = self.model(lr_batch)
+                sr_batch = self.model(lr_batch, train)
                 sr_list.extend(sr_batch.chunk(n_GPUs, dim=0))
         else:
             sr_list = [
-                self.forward_chop(patch, shave=shave, min_size=min_size) \
+                self.forward_chop(patch, shave=shave, min_size=min_size, train=Train) \
                 for patch in lr_list
             ]
 
