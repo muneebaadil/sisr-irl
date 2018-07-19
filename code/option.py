@@ -72,8 +72,6 @@ parser.add_argument('--train_jointly', action='store_true',
 parser.add_argument('--branch_label', type=str, default='residual',
                     help='whether to predict HR (i.e b0+b1=gt) or \
                     residuals (i.e b1=gt-b0)')
-parser.add_argument('--dont_add_branches',action='store_true',
-                    help='dont add outputs of IRL branches')
 parser.add_argument('--half_feats', action='store_true', 
                     help='whether half the number of feats at each branch')
 parser.add_argument('--half_resblocks', action='store_true',

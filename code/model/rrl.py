@@ -15,7 +15,6 @@ class RRL(nn.Module):
         args_ = deepcopy(args)
         self.auto_feats = True if (args.model.lower() == 'lapsrn') else False
         self.branch_label = args.branch_label.lower()
-        self.dont_add_branches = args.dont_add_branches
 
         self.branches = []
         module = import_module('model.' + args.model.lower())
@@ -61,10 +60,8 @@ class RRL(nn.Module):
                 featmaps = self.master_branch.tail.modules().next()._modules['0'].outputs[i]
             self.branch_outputs.append(branch(featmaps))
 
-        dont_add_branches = ((train==True) and (self.branch_label=='residual')) or \
-                            (self.dont_add_branches)
-                            
-        out = self.branch_outputs[-1] if (dont_add_branches) else \
+        out = self.branch_outputs[-1] \
+            if ((train==True) and (self.branch_label=='residual')) else \
                 reduce(lambda x,y:x+y, self.branch_outputs)
         
         return out
