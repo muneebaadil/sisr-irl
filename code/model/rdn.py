@@ -53,6 +53,8 @@ class RDN(nn.Module):
         x = self.gff_3(x)
         x = x + F_minus
 
+        self.down_feats = x
+
         out = self.tail(x)
 
         if self.is_sub_mean: 

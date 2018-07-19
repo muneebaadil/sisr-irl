@@ -15,6 +15,7 @@ class RRL(nn.Module):
         args_ = deepcopy(args)
         self.auto_feats = True if (args.model.lower() == 'lapsrn') else False
         self.branch_label = args.branch_label.lower()
+        self.down_feats = args.down_feats
 
         self.branches = []
         module = import_module('model.' + args.model.lower())
@@ -27,7 +28,10 @@ class RRL(nn.Module):
         for i in xrange(args.n_branches):
 
             args_.n_channel_in = args.n_feats
-            args_.scale = [args_.scale[0] // 2] 
+
+            if not args.down_feats: 
+                args_.scale = [args_.scale[0] // 2] 
+
             if args.half_feats: 
                 args_.n_feats = args_.n_feats / 2 
             if args.half_resblocks: 
@@ -54,10 +58,14 @@ class RRL(nn.Module):
         
         for i, branch in enumerate(self.branches): 
             
-            if self.auto_feats: 
-                featmaps = self.master_branch.features[i]
+            if self.down_feats: 
+                featmaps = self.master_branch.down_feats
             else: 
-                featmaps = self.master_branch.tail.modules().next()._modules['0'].outputs[i]
+                if self.auto_feats: 
+                    featmaps = self.master_branch.features[i]
+                else: 
+                    featmaps = self.master_branch.tail.modules().next()._modules['0'].outputs[i]
+
             self.branch_outputs.append(branch(featmaps))
 
         out = self.branch_outputs[-1] \

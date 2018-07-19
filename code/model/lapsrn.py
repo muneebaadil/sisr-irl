@@ -10,6 +10,7 @@ class Conv_Block(nn.Module):
     def __init__(self, n_layers, n_feats, negative_slope, kernel_size, upsample=True):
         super(Conv_Block, self).__init__()
         body = []
+        tail = []
 
         for _ in xrange(n_layers):
             layer = nn.Conv2d(in_channels=n_feats, out_channels=n_feats,
@@ -21,12 +22,14 @@ class Conv_Block(nn.Module):
             upsampled = nn.ConvTranspose2d(in_channels=n_feats, out_channels=n_feats,
                                         kernel_size=4, stride=2, padding=1,bias=False)
             act = nn.LeakyReLU(negative_slope, inplace=True)
-            body.extend([upsampled, act])
+            tail.extend([upsampled, act])
             
         self.body = nn.Sequential(*body)
+        self.tail = nn.Sequential(*tail)
 
     def forward(self, x): 
-        return self.body(x)
+        self.down_feats = self.body(x)
+        return self.tail(self.down_feats)
 
     def load_state_dict(self, state_dict, strict=True):
         own_state = self.state_dict()
@@ -81,6 +84,8 @@ class LapSRN(nn.Module):
         fx = self.head(x)
 
         self.features = []
+        self.down_feats = None 
+
         for feat,img,res in izip(self.feats_branch,self.images_branch,
                                 self.residuals_branch):
             fx = feat(fx)
@@ -88,7 +93,11 @@ class LapSRN(nn.Module):
             rx = res(fx)
 
             x = rx + ix
+
             self.features.append(fx)
+
+            if self.down_feats is None: 
+                self.down_feats = feat.down_feats
 
         return x
 
@@ -101,4 +110,4 @@ class LapSRN(nn.Module):
             try: 
                 own_state[k2].copy_(p1) 
             except Exception: 
-                raise RuntimeError('error'.format(k1, k2, p1.size(), p2.size()))
+                raise RuntimeError('error; {}, {}, {}, {}'.format(k1, k2, p1.size(), p2.size()))

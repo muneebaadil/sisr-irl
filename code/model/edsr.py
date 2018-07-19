@@ -51,6 +51,8 @@ class EDSR(nn.Module):
         res = self.body(x)
         res += x
 
+        self.down_feats = res
+
         x = self.tail(res)
         if self.is_sub_mean == True: 
             x = self.add_mean(x)
