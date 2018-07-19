@@ -61,13 +61,15 @@ class LapSRN(nn.Module):
             feat_branch = Conv_Block(args.n_layers, args.n_feats, args.negative_slope,
                                         kernel_size, upsample=not(self.scale==1))
             if not (self.scale==1):
-                img_branch = nn.ConvTranspose2d(in_channels=args.n_channel_in,
-                                             out_channels=args.n_channel_out,
-                                             kernel_size=4, stride=2, padding=1,
-                                             bias=False)
+                img_branch = nn.ConvTranspose2d(in_channels=args.n_channel_in if (i==0) \
+                                                else args.n_channel_out,
+                                                out_channels=args.n_channel_out,
+                                                kernel_size=4, stride=2, padding=1,
+                                                bias=False)
             else: 
-                img_branch = nn.Conv2d(in_channels=args.n_channel_in, kernel_size=kernel_size,
-                                       out_channels=args.n_channel_out, stride=1,padding=1,bias=True)
+                img_branch = nn.Conv2d(in_channels=args.n_channel_in if (i==0) else args.n_channel_out,
+                                        kernel_size=kernel_size,out_channels=args.n_channel_out,
+                                        stride=1,padding=1,bias=True)
 
             res_branch = nn.Conv2d(in_channels=args.n_feats, out_channels=args.n_channel_out,
                                     kernel_size=kernel_size,stride=1,padding=1,bias=False)
