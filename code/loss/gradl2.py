@@ -1,9 +1,9 @@
 import torch
 import torch.nn as nn 
 
-class GradL1(nn.Module): 
+class GradL2(nn.Module): 
     def __init__(self, n_channel, cuda): 
-        super(GradL1, self).__init__()
+        super(GradL2, self).__init__()
         self.hkernel = torch.zeros(size=(n_channel, n_channel, 3, 3),dtype=torch.float32)
         l = range(n_channel)
         self.hkernel[l,l] = torch.tensor([[1,2,1],[0,0,0],[-1,-2,-1]],dtype=torch.float32)
@@ -27,17 +27,7 @@ class GradL1(nn.Module):
                                     torch.pow(h_edges_input,2))        
         edges_mag_target = torch.add(torch.pow(v_edges_target,2),
                                     torch.pow(h_edges_target,2))
-
-        v_edges_input_norm = v_edges_input / edges_mag_input
-        h_edges_input_norm = h_edges_input / edges_mag_input
-
-        v_edges_target_norm = v_edges_target / edges_mag_target
-        h_edges_target_norm = h_edges_target / edges_mag_target
         
-        v_edges_loss = torch.mean(torch.abs(v_edges_target_norm - v_edges_input_norm))
-        h_edges_loss = torch.mean(torch.abs(h_edges_target_norm - h_edges_input_norm))
-
-        out = v_edges_loss + h_edges_loss
-        
+        out = torch.mean(torch.pow(edges_mag_target - edges_mag_input, 2))        
         return out 
     
