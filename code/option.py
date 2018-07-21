@@ -150,6 +150,8 @@ parser.add_argument('--loss', type=str, default='1*L1',
                     help='loss function configuration')
 parser.add_argument('--intensity_loss',action='store_true',
                     help='compute loss on intensity channel only')
+parser.add_argument('--normalized_loss', action='store_true',
+                    help='normalize images before computing loss')
 parser.add_argument('--skip_threshold', type=float, default='1e6',
                     help='skipping batch that has large error')
 

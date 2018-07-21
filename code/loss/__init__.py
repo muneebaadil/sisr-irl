@@ -20,6 +20,8 @@ class Loss(nn.modules.loss._Loss):
         self.loss = []
         self.loss_module = nn.ModuleList()
         self.intensity_loss = args.intensity_loss
+        self.normalize = args.normalized_loss
+        self.rgb_range = float(args.rgb_range)
 
         if args.intensity_loss:
             self.intensity_conv = torch.zeros((1,3,1,1),requires_grad=False)
@@ -96,6 +98,10 @@ class Loss(nn.modules.loss._Loss):
         if self.intensity_loss:
             sr = nn.functional.conv2d(sr, self.intensity_conv)
             hr = nn.functional.conv2d(hr, self.intensity_conv)
+
+        if self.normalize: 
+            sr = sr / self.rgb_range
+            hr = hr / self.rgb_range
             
         for i, l in enumerate(self.loss):
             if l['function'] is not None:
