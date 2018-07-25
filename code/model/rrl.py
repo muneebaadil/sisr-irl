@@ -17,8 +17,8 @@ class RRL(nn.Module):
         self.branch_label = args.branch_label.lower()
         self.down_feats = args.down_feats
 
-        self.branches = []
-        module = import_module('model.' + args.model.lower())
+        self.branches = []  
+        module = import_module('model.upsampler')
         self.master_branch = module.make_model(args)
 
         if not args.train_jointly: 
@@ -44,6 +44,7 @@ class RRL(nn.Module):
                     
             args_.is_sub_mean = False
 
+            module = import_module('model.{}'.format(args.model.lower()))
             branch = module.make_model(args_)
 
             if (not args.train_jointly) and (not (i == args.n_branches-1)): 
