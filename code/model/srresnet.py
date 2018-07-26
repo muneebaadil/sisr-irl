@@ -24,7 +24,8 @@ class SRResNet(nn.Module):
         body.extend([conv(args.n_feats, args.n_feats, kernel_size), 
                     nn.BatchNorm2d(args.n_feats)])
         tail = [
-            common.Upsampler(conv, scale, args.n_feats, act=nn.LeakyReLU),
+            common.Upsampler(conv, scale, args.n_feats, act=nn.LeakyReLU,
+                            act_kwargs={'negative_slope':.2}),
             conv(args.n_feats, args.n_channel_out, kernel_size)
         ]
 
@@ -47,6 +48,6 @@ class SRResNet(nn.Module):
         x = self.tail(res)
 
         if self.is_sub_mean: 
-            x = self.sub_mean(x)
+            x = self.add_mean(x)
 
         return x

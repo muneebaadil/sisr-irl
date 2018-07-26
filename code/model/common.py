@@ -117,7 +117,7 @@ class RDB(nn.Module):
     
 class Upsampler(nn.Sequential):
     def __init__(self, conv, scale, n_feat, bn=False, act=False, bias=True,
-                type='espcnn'):
+                type='espcnn',act_kwargs={}):
 
         m = []
         if (scale & (scale - 1)) == 0:    # Is scale = 2^n?
@@ -127,7 +127,7 @@ class Upsampler(nn.Sequential):
                     m.append(conv(n_feat, 4 * n_feat, 3, bias))
                     m.append(nn.PixelShuffle(2))
                     if bn: m.append(nn.BatchNorm2d(n_feat))
-                    if act: m.append(act())
+                    if act: m.append(act(**act_kwargs))
 
                 elif type=='deconv':
                     m.append(conv(n_feat,n_feat,2,2,padding=0,bias=bias))
