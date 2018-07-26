@@ -53,6 +53,8 @@ parser.add_argument('--n_channel_in', type=int, default=3,
                     help='number of input channels for network')
 parser.add_argument('--n_channel_out', type=int, default=3,
                     help='number of channels for network to output')
+parser.add_argument('--interpolate', action='store_true',
+                    help='bilinearly interpolate the LR image')
 parser.add_argument('--noise', type=str, default='.',
                     help='Gaussian noise std.')
 parser.add_argument('--chop', action='store_true',
