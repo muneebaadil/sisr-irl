@@ -21,8 +21,8 @@
 #up version already done at section 0.2.1.
 #python main.py --dir_data /datadrive/ --ext sep --scale 4 --model LapSRN --rgb_range 1 --n_channel_in 1 --n_channel_out 1 --n_feats 64 --n_layers 10 --enable_branches --n_branches 1 --branch_label residual --down_feats --master_branch_pretrain ../experiment/model/LapSRN_x4.pt --loss 1*MSE --epochs 30 --save down_feats/LapSRN_x4_down --reset 
 
-#python main.py --dir_data /datadrive/ --ext sep --scale 4 --model SRResNet --enable_branches --n_branches 1 --branch_label residual --master_branch_pretrain ../experiment/model/SRResNet_x4.pt --loss 1*MSE --epochs 30 --save down_feats/SRResNet_x4_down --reset
-#python main.py --dir_data /datadrive/ --ext sep --scale 4 --model SRResNet --enable_branches --n_branches 1 --branch_label residual --down_feats --master_branch_pretrain ../experiment/model/SRResNet_x4.pt --loss 1*MSE --epochs 30 --save down_feats/SRResNet_x4_down --reset
+python main.py --dir_data /datadrive/ --ext sep --scale 4 --model SRResNet --enable_branches --n_branches 1 --branch_label residual --master_branch_pretrain ../experiment/model/SRResNet_x4.pt --loss 1*MSE --epochs 30 --save down_feats/SRResNet_x4_up --reset
+python main.py --dir_data /datadrive/ --ext sep --scale 4 --model SRResNet --enable_branches --n_branches 1 --branch_label residual --down_feats --master_branch_pretrain ../experiment/model/SRResNet_x4.pt --loss 1*MSE --epochs 30 --save down_feats/SRResNet_x4_down --reset
 
 #1.2. scale 3 
 #python main.py --dir_data /datadrive/ --ext sep --scale 3 --model EDSR --enable_branches --half_resblocks --n_branches 1 --branch_label residual --master_branch_pretrain ../experiment/model/EDSR_baseline_x3.pt --loss 1*MSE --epochs 30 --save down_feats/EDSRb_x3_up --reset 
