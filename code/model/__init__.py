@@ -33,6 +33,8 @@ class Model(nn.Module):
         if not args.cpu and args.n_GPUs > 1:
             self.model = nn.DataParallel(self.model, range(args.n_GPUs))
 
+        if args.print_model: print(self.model)
+            
         self.load(
             ckp.dir,
             pre_train=args.pre_train,
@@ -40,7 +42,6 @@ class Model(nn.Module):
             cpu=args.cpu,
             pre_train2=args.master_branch_pretrain
         )
-        if args.print_model: print(self.model)
 
     def forward(self, x, idx_scale, train=False):
         self.idx_scale = idx_scale

@@ -93,7 +93,9 @@ class SRData(data.Dataset):
                                     self.args.n_channel_out)
         
         if self.args.interpolate:
-            lr = misc.imresize(lr[:,:,0], size=float(self.args.scale[0]))
+            lr = misc.imresize(lr[:,:,0] / self.args.rgb_range,
+                                 size=float(self.args.scale[0]),
+                                  interp='bicubic',mode='F') * self.args.rgb_range
             lr = lr[:,:,np.newaxis]
 
         lr_tensor, hr_tensor = common.np2Tensor([lr, hr], self.args.rgb_range)
