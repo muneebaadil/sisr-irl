@@ -10,6 +10,7 @@ class DRRN(nn.Module):
         
         kernel_size = 3 
         self.n_layers = args.n_layers 
+        self.is_residual = args.n_channel_in == args.n_channel_out 
 
         self.head = conv(args.n_channel_in,args.n_feats,kernel_size,bias=False)
         self.conv1 = conv(args.n_feats,args.n_feats,kernel_size,bias=False)
@@ -26,8 +27,8 @@ class DRRN(nn.Module):
             out = self.conv2(self.act(self.conv1(self.act(out))))
             out += inputs
 
-        out = self.tail(self.act(out))
-        out += residual 
+        self.features = [self.act(out)]
+        out = self.tail(self.features[0])
 
-        return out 
+        return out + residual if (self.is_residual) else out
     

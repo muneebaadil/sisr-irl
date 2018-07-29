@@ -13,7 +13,7 @@ class RRL(nn.Module):
         super(RRL, self).__init__()
 
         args_ = deepcopy(args)
-        self.auto_feats = True if (args.model.lower() in ['lapsrn','vdsr']) else False
+        self.auto_feats = True if (args.model.lower() in ['lapsrn','vdsr','drrn']) else False
         self.branch_label = args.branch_label.lower()
         self.down_feats = args.down_feats
 

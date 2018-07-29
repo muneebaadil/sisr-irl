@@ -24,20 +24,22 @@
 #python main.py --model SRResNet --enable_branches --n_branches 1 --branch_label residual --master_branch_pretrain ../experiment/model/SRResNet_x4.pt --loss 1*MSE --epochs 30 --save down_feats/SRResNet_x4_up --reset
 #python main.py --model SRResNet --enable_branches --n_branches 1 --branch_label residual --down_feats --master_branch_pretrain ../experiment/model/SRResNet_x4.pt --loss 1*MSE --epochs 30 --save down_feats/SRResNet_x4_down --reset
 
-#2. ALMOST FINAL MODELS
-#2.1. scale 4 
+#2. ALMOST FINAL MODELS (x4 scale)
 #VDSR 
 #branch1
-#python main.py --model VDSR --n_layers 20 --interpolate --patch_size 48 --rgb_range 1 --n_channel_in 1 --n_channel_out 1 --enable_branches --half_resblocks --n_branches 1 --master_branch_pretrain ../experiment/model/VDSR.pt --loss 1*MSE --epochs 30 --save almost_final/VDSR_x4_b1 --reset
+#python main.py --model VDSR --interpolate --patch_size 48 --rgb_range 1 --n_channel_in 1 --n_channel_out 1 --n_layers 20 --enable_branches --n_branches 1 --master_branch_pretrain ../experiment/model/VDSR.pt --loss 1*MSE --epochs 30 --save almost_final/VDSR_x4_b1 --reset
 #branch2
-#python main.py --model VDSR --n_layers 20 --interpolate --patch_size 48 --rgb_range 1 --n_channel_in 1 --n_channel_out 1 --enable_branches --half_resblocks --n_branches 1 --pre_train ../experiment/almost_final/VDSR_x4_b1/model/model_best.pt --loss 1*MSE --epochs 30 --save almost_final/VDSR_x4_b2 --reset
+#python main.py --model VDSR --interpolate --patch_size 48 --rgb_range 1 --n_channel_in 1 --n_channel_out 1 --n_layers 20 --enable_branches --n_branches 2 --pre_train ../experiment/almost_final/VDSR_x4_b1/model/model_best.pt --loss 1*MSE --epochs 30 --save almost_final/VDSR_x4_b2 --reset
 
 #DRRN 
 #branch1
+#python main.py --model DRRN --interpolate --patch_size 32 --rgb_range 1 --n_channel_in 1 --n_channel_out 1 --n_layers 25 --n_feats 128 --enable_branches --n_branches 1 --master_branch_pretrain ../experiment/model/DRRN.pt --loss 1*MSE --epochs 30 --save almost_final/DRRN_x4_b1 --reset
 #branch2
+#python main.py --model DRRN --interpolate --patch_size 32 --rgb_range 1 --n_channel_in 1 --n_channel_out 1 --n_layers 25 --n_feats 128 --enable_branches --n_branches 2 --pre_train ../experiment/almost_final/DRRN_x4_b1/model/model_best.pt --loss 1*MSE --epochs 30 --save almost_final/DRRN_x4_b2 --reset
 
 #LapSRN 
 #branch1
+
 #branch2
 
 #MemNet 
@@ -45,7 +47,16 @@
 #branch2
 
 #EDSRb 
-#branch1 
+#branch1
+#python main.py --model EDSR --enable_branches --n_branches 1 --branch_label residual --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 1*L1 --epochs 30 --save learning_label/EDSRb_x4_residual_L1 --reset  
+#branch2
+
+#EDSR
+#branch1
+#branch2 
+
+#RDN
+#branch1
 #branch2
 
 #2. Loss Tests
@@ -56,3 +67,12 @@
 #python main.py --model EDSR --enable_branches --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 1*GradL2 --epochs 30 --normalized_loss --save loss_tests/EDSRb_x4_GradL2 --reset --save_results --save_branches --save_residuals
 #python main.py --model EDSR --enable_branches --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 0.05*GradL2+0.95*MSE --normalized_loss --epochs 30 --save loss_tests/EDSRb_x4_05GradMSE_95MSE --reset --save_results --save_branches --save_residuals
 #python main.py --model EDSR --enable_branches --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 0.1*GradL2+0.9*MSE --normalized_loss --epochs 30 --save loss_tests/EDSRb_x4_10GradMSE_90MSE --reset --save_results --save_branches --save_residuals
+
+#3. FINAL MODELS
+#3.1. Scale 2 
+
+#3.2. Scale 3 
+
+#3.4. Scale 4 
+
+#4. GAN extension
