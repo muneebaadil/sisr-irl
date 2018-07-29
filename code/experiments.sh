@@ -55,13 +55,15 @@
 
 #EDSR
 #branch1
-#python main.py --model EDSR --patch_size 96 --n_resblocks 32 --n_feats 256 --res_scale .1 --patch_size 96 --enable_branches --n_branches 1 --half_resblocks --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 1*L1 --epochs 30 --save almost_final/EDSRb_x4_b1 --reset  
+#python main.py --model EDSR --patch_size 96 --n_resblocks 32 --n_feats 256 --res_scale .1 --enable_branches --n_branches 1 --half_resblocks --master_branch_pretrain ../experiment/model/EDSR_x4.pt --loss 1*L1 --epochs 30 --save almost_final/EDSR_x4_b1 --reset  
 #branch2
-#python main.py --model EDSR --patch_size 96 --n_resblocks 32 --n_feats 256 --res_scale .1 --patch_size 96 --enable_branches --n_branches 2 --half_resblocks --pre_train ../experiment/almost_final/EDSRb_x4_b1/model/model_best.pt --loss 1*L1 --epochs 30 --save almost_final/EDSRb_x4_b2 --reset  
+#python main.py --model EDSR --patch_size 96 --n_resblocks 32 --n_feats 256 --res_scale .1 --enable_branches --n_branches 2 --half_resblocks --pre_train ../experiment/almost_final/EDSRb_x4_b1/model/model_best.pt --loss 1*L1 --epochs 30 --save almost_final/EDSR_x4_b2 --reset  
 
 #RDN
 #branch1
+#python main.py --model RDN --patch_size 128 --n_denseblocks 16 --n_layers 8 --n_feats 64 --growth_rate 64 --enable_branches --n_branches 1 --half_resblocks --master_branch_pretrain ../experiment/model/RDN_x4.pt --loss 1*L1 --epochs 30 --save almost_final/RDN_x4_b1 --reset  
 #branch2
+#python main.py --model RDN --patch_size 128 --n_denseblocks 16 --n_layers 8 --n_feats 64 --growth_rate 64 --enable_branches --n_branches 2 --half_resblocks --pre_train ../experiment/almost_final/RDN_x4_b1/model/model_best.pt --loss 1*L1 --epochs 30 --save almost_final/RDN_x4_b2 --reset  
 
 #2. Loss Tests
 #2.1. EDSRb, scale 4
