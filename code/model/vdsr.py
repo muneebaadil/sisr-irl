@@ -11,6 +11,7 @@ class VDSR(nn.Module):
 
         kernel_size = 3 
         self.scale = args.scale[0]
+        self.is_residual = args.n_channel_in == args.n_channel_out
         
         head = [conv(args.n_channel_in, args.n_feats, kernel_size, bias=True),
                 nn.ReLU(inplace=True)]
@@ -22,10 +23,10 @@ class VDSR(nn.Module):
             body.append(nn.ReLU(inplace=True))
         self.body = nn.Sequential(*body)
 
-        self.tail = conv(args.n_feats, args.n_channel_in, kernel_size, bias=True)
+        self.tail = conv(args.n_feats, args.n_channel_out, kernel_size, bias=True)
         
     def forward(self, x):
         out = self.head(x)
-        out = self.body(out)
-        out = self.tail(out)
-        return out + x
+        self.features = [self.body(out)]
+        out = self.tail(self.features[0])
+        return out + x if (self.is_residual) else out
