@@ -74,6 +74,8 @@ parser.add_argument('--train_jointly', action='store_true',
 parser.add_argument('--branch_label', type=str, default='residual',
                     help='whether to predict HR (i.e b0+b1=gt) or \
                     residuals (i.e b1=gt-b0)')
+parser.add_argument('--bilateral_residuals',action='store_true',
+                    help='apply bilateral filter before generating residuals')
 parser.add_argument('--down_feats', action='store_true',
                     help='take downsampled feature maps as input for next branch')
 parser.add_argument('--half_feats', action='store_true', 

@@ -53,7 +53,17 @@ class Trainer():
             sr = self.model(lr, idx_scale, True)
 
             if (self.args.branch_label.lower() == 'residual') and (self.args.enable_branches): 
-                hr = hr - reduce(lambda x,y: x+y, self.model.model.branch_outputs[:-1])
+                sr_ = reduce(lambda x,y: x+y, self.model.model.branch_outputs[:-1])
+
+                if self.args.bilateral_residuals: 
+                    sr_ = utility.get_bilateral(sr_, self.args.rgb_range)
+                    hr = utility.get_bilateral(hr, self.args.rgb_range)
+
+                    if not self.args.cpu: 
+                        sr_ = sr_.cuda() 
+                        hr = hr.cuda()
+
+                hr = hr - sr_ 
 
             loss = self.loss(sr, hr)
             if loss.item() < self.args.skip_threshold * self.error_last:

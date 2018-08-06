@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 import scipy.misc as misc
+from skimage.restoration import denoise_bilateral
 
 import torch
 import torch.optim as optim
@@ -168,6 +169,15 @@ class checkpoint():
             misc.imsave('{}{}.png'.format(filename, '_branch{}'.format(i)), ndarr)
 
         return 
+
+def get_bilateral(tensor, rgb_range): 
+    tensor = tensor.numpy().transpose(0,2,3,1) / rgb_range
+    out = np.zeros_like(tensor)
+
+    for i, t in enumerate(tensor): 
+        out[i] = denoise_bilateral(t)
+
+    return torch.Tensor(out.transpose(0,3,1,2)) * rgb_range
 
 def quantize(img, rgb_range):
     pixel_range = 255 / rgb_range

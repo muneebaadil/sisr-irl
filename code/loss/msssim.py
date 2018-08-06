@@ -30,7 +30,7 @@ class MSSSIM(nn.Module):
         self.weights = torch.Tensor(self.weights)
 
         if cuda: 
-            self.w = self.w.cuda()
+            self.weights = self.weights.cuda()
         
     def forward(self, input, target): 
         def _forward(kernel): 
