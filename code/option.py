@@ -39,7 +39,7 @@ parser.add_argument('--n_val', type=int, default=10,
                     help='number of validation set')
 parser.add_argument('--offset_val', type=int, default=790,
                     help='validation index offest')
-parser.add_argument('--ext', type=str, default='img',
+parser.add_argument('--ext', type=str, default='sep',
                     help='dataset file extension')
 parser.add_argument('--scale', default='4',
                     help='super resolution scale')
@@ -66,11 +66,11 @@ parser.add_argument('--model', default='EDSR',
 parser.add_argument('--branch_num', type=int, default=1,
                     help='branch number for RRL')
 parser.add_argument('--enable_branches', action='store_true',
-                    help='repetitive residual learning using sequential branches')
+                    help='incremental residual learning using sequential branches')
 parser.add_argument('--n_branches', type=int, default=1,
                     help='number of sequential branches to train')
 parser.add_argument('--train_jointly', action='store_true',
-                    help='whether to train branches jointly or not')
+                    help='train branches jointly')
 parser.add_argument('--branch_label', type=str, default='residual',
                     help='whether to predict HR (i.e b0+b1=gt) or \
                     residuals (i.e b1=gt-b0)')
