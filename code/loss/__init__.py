@@ -50,6 +50,7 @@ class Loss(nn.modules.loss._Loss):
                 module = import_module('loss.ssim')
                 loss_function = getattr(module, 'SSIM')(args.patch_size, 
                                                         args.batch_size,
+                                                        args.n_channel_out,
                                                         not args.cpu)
             elif loss_type == 'WeightedMSE': 
                 module = import_module('loss.weightedmse')
