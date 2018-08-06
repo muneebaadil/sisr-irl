@@ -46,6 +46,9 @@ class Loss(nn.modules.loss._Loss):
                 module = import_module('loss.gradl2')
                 loss_function = getattr(module, 'GradL2')(args.n_channel_out,
                                                         not args.cpu)
+            elif loss_type == 'SSIM': 
+                module = import_module('loss.ssim')
+                loss_function = getattr(module, 'SSIM')(args.patch_size, args.batch_size)
             elif loss_type == 'WeightedMSE': 
                 module = import_module('loss.weightedmse')
                 loss_function = getattr(module, 'WeightedMSE')()
