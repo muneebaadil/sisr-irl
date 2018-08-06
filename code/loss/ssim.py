@@ -5,7 +5,7 @@ import pdb
 
 class SSIM(nn.Module): 
 
-    def __init__(self, width, batch_size, n_channel, cuda, c1=.01, c2=.02, sigma=5.): 
+    def __init__(self, width, batch_size, n_channel, cuda, c1=.01**2, c2=.02**2, sigma=5.): 
         super(SSIM, self).__init__()
         self.c1 = c1 
         self.c2 = c2 

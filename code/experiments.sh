@@ -67,13 +67,14 @@
 
 #2. Loss Tests
 #2.1. EDSRb, scale 4
-#python main.py --model EDSR --enable_branches --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 1*MSE --epochs 30 --save loss_tests/EDSRb_x4_MSE --reset --save_results --save_branches --save_residuals
-#python main.py --model EDSR --enable_branches --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 1*L1 --epochs 30 --save loss_tests/EDSRb_x4_L1 --reset --save_results --save_branches --save_residuals
-#python main.py --model EDSR --enable_branches --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 0.75*MSE+0.25*L1 --normalized_loss --epochs 30 --save loss_tests/EDSRb_x4_75MSE_25L1 --reset --save_results --save_branches --save_residuals
-#python main.py --model EDSR --enable_branches --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 1*GradL2 --epochs 30 --normalized_loss --save loss_tests/EDSRb_x4_GradL2 --reset --save_results --save_branches --save_residuals
-#python main.py --model EDSR --enable_branches --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 0.05*GradL2+0.95*MSE --normalized_loss --epochs 30 --save loss_tests/EDSRb_x4_05GradMSE_95MSE --reset --save_results --save_branches --save_residuals
-#python main.py --model EDSR --enable_branches --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 0.1*GradL2+0.9*MSE --normalized_loss --epochs 30 --save loss_tests/EDSRb_x4_10GradMSE_90MSE --reset --save_results --save_branches --save_residuals
-#python main.py --model EDSR --enable_branches --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss SSIM --normalized_loss --epochs 30 --save loss_tests/ssim --reset --save_branches
+#python main.py --model EDSR --enable_branches --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 1*MSE --epochs 30 --save loss_tests/EDSRb_x4_MSE --reset --save_branches
+#python main.py --model EDSR --enable_branches --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 1*L1 --epochs 30 --save loss_tests/EDSRb_x4_L1 --reset --save_branches
+#python main.py --model EDSR --enable_branches --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 0.75*MSE+0.25*L1 --normalized_loss --epochs 30 --save loss_tests/EDSRb_x4_75MSE_25L1 --reset --save_branches
+#python main.py --model EDSR --enable_branches --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 1*GradL2 --epochs 30 --normalized_loss --save loss_tests/EDSRb_x4_GradL2 --reset --save_branches
+#python main.py --model EDSR --enable_branches --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 0.05*GradL2+0.95*MSE --normalized_loss --epochs 30 --save loss_tests/EDSRb_x4_05GradMSE_95MSE --reset --save_branches
+#python main.py --model EDSR --enable_branches --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 0.1*GradL2+0.9*MSE --normalized_loss --epochs 30 --save loss_tests/EDSRb_x4_10GradMSE_90MSE --reset --save_branches
+#python main.py --model EDSR --enable_branches --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 1*SSIM --normalized_loss --epochs 30 --save loss_tests/ssim --reset --save_branches
+#python main.py --model EDSR --enable_branches --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 1*MSSSIM --normalized_loss --epochs 30 --save loss_tests/msssim --reset --save_branches
 
 #3. FINAL MODELS
 #3.1. Scale 2 
