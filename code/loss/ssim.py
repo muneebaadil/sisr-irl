@@ -4,7 +4,7 @@ import torch
 
 class SSIM(nn.Module): 
 
-    def __init__(self, width, batch_size, c1=.01, c2=.02, sigma=5.): 
+    def __init__(self, width, batch_size, cuda, c1=.01, c2=.02, sigma=5.): 
         super(SSIM, self).__init__()
         self.c1 = c1 
         self.c2 = c2 
@@ -17,6 +17,9 @@ class SSIM(nn.Module):
         self.w = np.tile(self.w, (batch_size, 3, 1, 1))
 
         self.w = torch.Tensor(self.w)
+
+        if cuda: 
+            self.w = self.w.cuda()
     
     def forward(self, input, target): 
         nb, nc = input.shape[0], input.shape[1]
