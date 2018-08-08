@@ -1,3 +1,6 @@
+#DATASET SETUP 
+#python main.py --model EDSR --scale 4 --save EDSR_baseline_x2 --reset --ext sep_reset --train_only --dir_data [paste-data-dir-here]
+
 #0. DIRECT VS RESIDUAL LEARNING EXPERIMENTS 
 #0.1. EDSRb
 #0.1.1. scale 4 
@@ -82,5 +85,13 @@
 #3.2. Scale 3 
 
 #3.4. Scale 4 
+#RDN
+#python main.py --model RDN --patch_size 128 --n_denseblocks 16 --n_layers 8 --n_feats 64 --growth_rate 64 --enable_branches --n_branches 1 --half_resblocks --master_branch_pretrain ../experiment/model/RDN_x4.pt --loss 1*MSE --epochs 30 --batch_size 8 --save final_models/RDN_x4_b1 --reset --chop
+#EDSR
+#python main.py --model EDSR --patch_size 96 --n_resblocks 32 --n_feats 256 --res_scale .1 --enable_branches --n_branches 1 --half_resblocks --master_branch_pretrain ../experiment/model/EDSR_x4.pt --loss 1*MSE --epochs 30 --save final_models/EDSR_x4_b1 --reset --chop
+#EDSRb
+#python main.py --model EDSR --patch_size 96 --enable_branches --n_branches 1 --half_resblocks --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 1*MSE --epochs 50 --save final_models/EDSRb_x4_b1 --reset
+#LapSRN
+#python main.py --model LapSRN --patch_size 128 --rgb_range 1 --n_channel_in 1 --n_channel_out 1 --n_layers 10 --n_feats 64 --half_resblocks --enable_branches --n_branches 1 --master_branch_pretrain ../experiment/model/LapSRN_x4.pt --loss 1*MSE --epochs 30 --save final/LapSRN_x4_b1 --reset
 
 #4. GAN extension
