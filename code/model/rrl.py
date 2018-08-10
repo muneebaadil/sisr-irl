@@ -1,5 +1,6 @@
 from model import common 
 import torch.nn as nn 
+import torch
 import model
 from importlib import import_module
 from copy import deepcopy
@@ -62,9 +63,15 @@ class RRL(nn.Module):
                 featmaps = self.master_branch.down_feats
             else: 
                 if self.auto_feats: 
-                    featmaps = self.master_branch.features[i]
+                    featmaps = [self.master_branch.features[i]]
+                    for j in xrange(1,i):
+                        featmaps.append(self.branches[j].features[j-1])
                 else: 
-                    featmaps = self.master_branch.tail.modules().next()._modules['0'].outputs[i]
+                    featmaps = [self.master_branch.tail.modules().next()._modules['0'].outputs[i]]
+                    for j in xrange(1,i): 
+                        featmaps.append(self.branches[j].tail.modules().next()._modules['0'].outputs[i])
+
+                featmaps = torch.cat(featmaps,dim=1)
 
             self.branch_outputs.append(branch(featmaps))
 
