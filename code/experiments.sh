@@ -90,8 +90,9 @@
 #EDSR
 #python main.py --model EDSR --patch_size 96 --n_resblocks 32 --n_feats 256 --res_scale .1 --enable_branches --n_branches 1 --half_resblocks --master_branch_pretrain ../experiment/model/EDSR_x4.pt --loss 1*MSE --epochs 30 --save final_models/EDSR_x4_b1 --reset --chop
 #EDSRb
-#python main.py --model EDSR --patch_size 96 --enable_branches --n_branches 1 --half_resblocks --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 1*MSE --epochs 50 --save final_models/EDSRb_x4_b1 --reset
+#python main.py --model EDSR --patch_size 96 --enable_branches --n_branches 1 --half_resblocks --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 1*MSE --epochs 30 --save final_models/EDSRb_x4_b1 --reset
+#python main.py --model EDSR --patch_size 96 --enable_branches --n_branches 2 --half_resblocks --pre_train ../experiment/final_models/EDSRb_x4_b1/model/model_best.pt --loss 1*MSE --epochs 30 --save final_models/EDSRb_x4_b2 --reset
+
 #LapSRN
 #python main.py --model LapSRN --patch_size 128 --rgb_range 1 --n_channel_in 1 --n_channel_out 1 --n_layers 10 --n_feats 64 --half_resblocks --enable_branches --n_branches 1 --master_branch_pretrain ../experiment/model/LapSRN_x4.pt --loss 1*MSE --epochs 30 --save final/LapSRN_x4_b1 --reset
-
-#4. GAN extension
+#python main.py --model LapSRN --patch_size 128 --rgb_range 1 --n_channel_in 1 --n_channel_out 1 --n_layers 10 --n_feats 64 --half_resblocks --enable_branches --n_branches 2 --pre_train ../experiment/final_models/LapSRN_x4_b1/model/model_best.pt --loss 1*MSE --epochs 30 --save final/LapSRN_x4_b2 --reset
