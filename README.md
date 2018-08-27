@@ -1,29 +1,25 @@
-# EDSR-PyTorch
-![](/figs/main.png)
+# Improving Super-Resolution Methods via Incremental Residual Learning
 
-This repository is an official PyTorch implementation of the paper **"Enhanced Deep Residual Networks for Single Image Super-Resolution"** from **CVPRW 2017, 2nd NTIRE**.
-You can find the original code and more information from [here](https://github.com/LimBee/NTIRE2017).
+![demo](./figs/demo.png)
 
-If you find our work useful in your research or publication, please cite our work:
+Recently, deep Convolutional Neural Networks (CNNs) have shown promising performance in accurate reconstruction of high resolution (HR) image, given its low resolution (LR) counter-part. However, recent state-of-the-art methods operate primarily on LR image for memory efficiency, but we show that it comes at the cost of performance. Furthermore, because spatial dimensions of input and output of such networks do not match, it's not possible to learn residuals in image space; we show that learning residuals in image space leads to performance enhancement. To this end, we propose a novel Incremental Residual Learning (IRL) framework to solve the above mentioned issues. In IRL, a set of branches i.e arbitrary image-to-image networks are trained sequentially where each branch takes spatially upsampled higher dimensional feature maps as input and predicts the residuals of all previous branches combined. We plug recent state of the art methods as base networks in IRL framework and demonstrate the consistent performance enhancement through extensive experiments on public benchmark datasets to set a new state of the art for super-resolution. Compared to the base networks our method incurs no extra memory overhead as only one branch is trained at a time. Furthermore, as our method is trained to learned residuals, complete set of branches are trained in only 20% of time relative to base network. 
 
-[1] Bee Lim, Sanghyun Son, Heewon Kim, Seungjun Nah, and Kyoung Mu Lee, **"Enhanced Deep Residual Networks for Single Image Super-Resolution,"** <i>2nd NTIRE: New Trends in Image Restoration and Enhancement workshop and challenge on image super-resolution in conjunction with **CVPR 2017**. </i> [[PDF](http://openaccess.thecvf.com/content_cvpr_2017_workshops/w12/papers/Lim_Enhanced_Deep_Residual_CVPR_2017_paper.pdf)] [[arXiv](https://arxiv.org/abs/1707.02921)] [[Slide](https://cv.snu.ac.kr/research/EDSR/Presentation_v3(release).pptx)]
+Please view the full paper [here](https://arxiv.org/abs/1808.07110)
+
+If you find our work useful, please consider citing: 
+
 ```
-@InProceedings{Lim_2017_CVPR_Workshops,
-  author = {Lim, Bee and Son, Sanghyun and Kim, Heewon and Nah, Seungjun and Lee, Kyoung Mu},
-  title = {Enhanced Deep Residual Networks for Single Image Super-Resolution},
-  booktitle = {The IEEE Conference on Computer Vision and Pattern Recognition (CVPR) Workshops},
-  month = {July},
-  year = {2017}
+@article{muneeb2018irl,
+  title={Improving Super-Resolution Methods via Incremental Residual Learning},
+  author={M. Aadil, R. Rahim, S. Hussain},
+  journal={arXiv preprint arXiv:1808.07110},
+  year={2018}
 }
 ```
-We provide scripts for reproducing all the results from our paper. You can train your own model from scratch, or use pre-trained model to enlarge your images.
 
-**Differences between Torch version**
-* Codes are much more compact. (Removed all unnecessary parts.)
-* Models are smaller. (About half.)
-* Slightly better performances.
-* Training and evaluation requires less memory.
-* Python-based.
+# Getting Started 
+
+![architecture](./figs/irl.svg)
 
 ## Dependencies
 * Python (Tested with 3.6)
@@ -33,50 +29,9 @@ We provide scripts for reproducing all the results from our paper. You can train
 * matplotlib
 * tqdm
 
-**Recent updates**
+## Datasets
 
-* Apr 26, 2018
-  * Compatible with PyTorch 0.4.0
-  * Please use the legacy/0.3.1 branch if you are using the old version of PyTorch.
-  * Minor bug fixes
-
-## Code
-Clone this repository into any place you want.
-```bash
-git clone https://github.com/thstkdgus35/EDSR-PyTorch
-cd EDSR-PyTorch
-```
-
-## Quick start (Demo)
-You can test our super-resolution algorithm with your own images. Place your images in ``test`` folder. (like ``test/<your_image>``) We support **png** and **jpeg** files.
-
-Run the script in ``code`` folder. Before you run the demo, please uncomment the appropriate line in ```demo.sh``` that you want to execute.
-```bash
-cd code       # You are now in */EDSR-PyTorch/code
-sh demo.sh
-```
-
-You can find the result images from ```experiment/test/results``` folder.
-
-| Model | Scale | File name (.pt) | Parameters | ****PSNR** |
-|  ---  |  ---  | ---       | ---        | ---  |
-| **EDSR** | 2 | EDSR_baseline_x2 | 1.37 M | 34.61 dB |
-| | | *EDSR_x2 | 40.7 M | 35.03 dB |
-| | 3 | EDSR_baseline_x3 | 1.55 M | 30.92 dB |
-| | | *EDSR_x3 | 43.7 M | 31.26 dB |
-| | 4 | EDSR_baseline_x4 | 1.52 M | 28.95 dB |
-| | | *EDSR_x4 | 43.1 M | 29.25 dB |
-| **MDSR** | 2 | MDSR_baseline | 3.23 M | 34.63 dB |
-| | | *MDSR | 7.95 M| 34.92 dB |
-| | 3 | MDSR_baseline | | 30.94 dB |
-| | | *MDSR | | 31.22 dB |
-| | 4 | MDSR_baseline | | 28.97 dB |
-| | | *MDSR | | 29.24 dB |
-
-*Baseline models are in ``experiment/model``. Please download our final models from [here](https://cv.snu.ac.kr/research/EDSR/model_pytorch.tar) (542MB)
-**We measured PSNR using DIV2K 0801 ~ 0900, RGB channels, without self-ensemble. (scale + 2) pixels from the image boundary are ignored.
-
-You can evaluate your models with widely-used benchmark datasets:
+[DIV2K - Agustsson et al. CVPRW 2017](https://data.vision.ee.ethz.ch/cvl/DIV2K/)
 
 [Set5 - Bevilacqua et al. BMVC 2012](http://people.rennes.inria.fr/Aline.Roumy/results/SR_BMVC12.html),
 
@@ -86,79 +41,142 @@ You can evaluate your models with widely-used benchmark datasets:
 
 [Urban100 - Huang et al. CVPR 2015](https://sites.google.com/site/jbhuang0604/publications/struct_sr).
 
-For these datasets, we first convert the result images to YCbCr color space and evaluate PSNR on the Y channel only. You can download [benchmark datasets](https://cv.snu.ac.kr/research/EDSR/benchmark.tar) (250MB). Set ``--dir_data <where_benchmark_folder_located>`` to evaluate the EDSR and MDSR with the benchmarks.
+Place the datasets under `datasets` directory, like so: 
 
-## How to train EDSR and MDSR
-We used [DIV2K](http://www.vision.ee.ethz.ch/%7Etimofter/publications/Agustsson-CVPRW-2017.pdf) dataset to train our model. Please download it from [here](https://cv.snu.ac.kr/research/EDSR/DIV2K.tar) (7.1GB).
-
-Unpack the tar file to any place you want. Then, change the ```dir_data``` argument in ```code/option.py``` to the place where DIV2K images are located.
-
-We recommend you to pre-process the images before training. This step will decode all **png** files and save them as binaries. Use ``--ext sep_reset`` argument on your first run. You can skip the decoding part and use saved binaries with ``--ext sep`` argument.
-
-If you have enough RAM (>= 32GB), you can use ``--ext bin`` argument to pack all DIV2K images in one binary file.
-
-You can train EDSR and MDSR by yourself. All scripts are provided in the ``code/demo.sh``. Note that EDSR (x3, x4) requires pre-trained EDSR (x2). You can ignore this constraint by removing ```--pre_train <x2 model>``` argument.
-
-```bash
-cd code       # You are now in */EDSR-PyTorch/code
-sh demo.sh
+```
+datasets/
+    benchmark/
+        Set5/
+        Set14/
+        B100/
+        Urban100/
+    DIV2K/
+        DIV2K_train_HR/
+        DIV2K_train_LR_bicubic/
+            X2/
+            X3/
+            X4/
 ```
 
-**Update log**
-* Jan 04, 2018
-  * Many parts are re-written. You cannot use previous scripts and models directly.
-  * Pre-trained MDSR is temporarily disabled.
-  * Training details are included.
+# Training
 
-* Jan 09, 2018
-  * Missing files are included (```code/data/MyImage.py```).
-  * Some links are fixed.
+Training IRL requires two following steps. 
 
-* Jan 16, 2018
-  * Memory efficient forward function is implemented.
-  * Add --chop_forward argument to your script to enable it.
-  * Basically, this function first split a large image to small patches. Those images are merged after super-resolution. I checked this function with 12GB memory, 4000 x 2000 input image in scale 4. (Therefore, the output will be 16000 x 8000.)
+## Train Master Branch (Original State of the Art)
 
-* Feb 21, 2018
-  * Fixed the problem when loading pre-trained multi-gpu model.
-  * Added pre-trained scale 2 baseline model.
-  * This code now only saves the best-performing model by default. For MDSR, 'the best' can be ambiguous. Use --save_models argument to save all the intermediate models.
-  * PyTorch 0.3.1 changed their implementation of DataLoader function. Therefore, I also changed my implementation of MSDataLoader. You can find it on feature/dataloader branch.
+```shell
+#RDN 
+python main.py --model RDN --patch_size 128 --epochs 200 --save RDN_x4 --reset --chop
 
-* Feb 23, 2018
-  * Now PyTorch 0.3.1 is default. Use legacy/0.3.0 branch if you use the old version.
-   
-  * With a new ``code/data/DIV2K.py`` code, one can easily create new data class for super-resolution.
-  * New binary data pack. (Please remove the ``DIV2K_decoded`` folder from your dataset if you have.)
-  * With ``--ext bin``, this code will automatically generates and saves the binary data pack that corresponds to previous ``DIV2K_decoded``. (This requires huge RAM (~45GB, Swap can be used.), so please be careful.)
-  * If you cannot make the binary pack, just use the default setting (``--ext img``).
+#EDSR
+python main.py --model EDSR --n_resblocks 32 --n_feats 256 --res_scale 0.1 --save EDSR_x4 --reset --chop
 
-  * Fixed a bug that PSNR in the log and PSNR calculated from the saved images does not match.
-  * Now saved images have better quality! (PSNR is ~0.1dB higher than the original code.)
-  * Added performance comparison between Torch7 model and PyTorch models.
+#EDSRb 
+python main.py --model EDSR --save EDSRb_x4 --reset
 
-* Mar 5, 2018
-  * All baseline models are uploaded.
-  * Now supports half-precision at test time. Use ``--precision half``  to enable it. This does not degrade the output images.
+#SRResNet
+python main.py --model SRResNet --save SRResNet_x4 --reset
 
-* Mar 11, 2018
-  * Fixed some typos in the code and script.
-  * Now --ext img is default setting. Although we recommend you to use --ext bin when training, please use --ext img when you use --test_only.
-  * Skip_batch operation is implemented. Use --skip_threshold argument to skip the batch that you want to ignore. Although this function is not exactly same with that of Torch7 version, it will work as you expected.
+#LapSRN
+python main.py --model LapSRN --patch_size 128 --n_channel_in 1 --n_channel_out 1 --n_layers 10 --loss 1*MSE --epochs 300 --save LapSRN_x4 --reset
+```
 
-* Mar 20, 2018
-  * Use ``--ext sep_reset`` to pre-decode large png files. Those decoded files will be saved to the same directory with DIV2K png files. After the first run, you can use ``--ext sep`` to save time.
-  * Now supports various benchmark datasets. For example, try ``--data_test Set5`` to test your model on the Set5 images.
-  * Changed the behavior of skip_batch.
+## Train Residual Branches (Ours)
 
-* Mar 29, 2018
-  * We now provide all models from our paper.
-  * We also provide ``MDSR_baseline_jpeg`` model that suppresses JPEG artifacts in original low-resolution image. Please use it if you have any trouble.
-  * ``MyImage`` dataset is changed to ``Demo`` dataset. Also, it works more efficient than before.
-  * Some codes and script are re-written.
+Train the same way as original networks, except simply enable `--enable_branches` flag and mention some options.
 
-* Apr 9, 2018
-  * VGG and Adversarial loss is implemented based on [SRGAN](http://openaccess.thecvf.com/content_cvpr_2017/papers/Ledig_Photo-Realistic_Single_Image_CVPR_2017_paper.pdf). [WGAN](https://arxiv.org/abs/1701.07875) and [gradient penalty](https://arxiv.org/abs/1704.00028) are also implemented, but they are not tested yet.
-  * Many codes are refactored. If there exists a bug, please report it.
-  * [D-DBPN](https://arxiv.org/abs/1803.02735) is implemented. Default setting is D-DBPN-L.
+```shell
+#RDN 
+#branch1
+python main.py --model RDN --patch_size 128 --enable_branches --n_branches 1 --half_resblocks --master_branch_pretrain ../experiment/model/RDN_x4.pt --loss 1*MSE --epochs 20 --batch_size 8 --save RDN_x4_b1 --reset --chop
+#branch2
+python main.py --model RDN --patch_size 128 --enable_branches --n_branches 2 --half_resblocks --pre_train ../experiment/RDN_x4_b1/model/model_best.pt --loss 1*MSE --epochs 20 --batch_size 8 --save RDN_x4_b1 --reset --chop
 
+#EDSR
+#branch1
+python main.py --model EDSR --patch_size 96 --n_resblocks 32 --n_feats 256 --res_scale .1 --enable_branches --n_branches 1 --half_resblocks --master_branch_pretrain ../experiment/model/EDSR_x4.pt --loss 1*MSE --epochs 30 --save EDSR_x4_b1 --reset --chop
+#branch2
+python main.py --model EDSR --patch_size 96 --n_resblocks 32 --n_feats 256 --res_scale .1 --enable_branches --n_branches 2 --half_resblocks --pre_train ../experiment/EDSR_x4_b1/model/model_best.pt --loss 1*MSE --epochs 30 --save EDSR_x4_b2 --reset --chop
+
+#EDSRb 
+#branch1
+python main.py --model EDSR --patch_size 96 --enable_branches --n_branches 1 --half_resblocks --master_branch_pretrain ../experiment/model/EDSR_baseline_x4.pt --loss 1*MSE --epochs 30 --save EDSRb_x4_b1 --reset
+#branch2
+python main.py --model EDSR --patch_size 96 --enable_branches --n_branches 2 --half_resblocks --pre_train ../experiment/EDSRb_x4_b1/model/model_best.pt --loss 1*MSE --epochs 30 --save EDSRb_x4_b2 --reset
+
+#SRResNet
+#branch1
+python main.py --model SRResNet --patch_size 96 --enable_branches --n_branches 1 --half_resblocks --master_branch_pretrain ../experiment/model/SRResNet_x4.pt --loss 1*MSE --epochs 30 --save SRResNet_x4_b1 --reset
+#branch2
+python main.py --model SRResNet --patch_size 96 --enable_branches --n_branches 2 --half_resblocks --pre_train ../experiment/SRResNet_x4_b1/model/model_best.pt --loss 1*MSE --epochs 30 --save SRResNet_x4_b2 --reset
+
+#LapSRN
+#branch1
+python main.py --model LapSRN --patch_size 128 --rgb_range 1 --n_channel_in 1 --n_channel_out 1 --n_layers 10 --half_resblocks --enable_branches --n_branches 1 --master_branch_pretrain ../experiment/model/LapSRN_x4.pt --loss 1*MSE --epochs 30 --save LapSRN_x4_b1 --reset
+#branch2
+python main.py --model LapSRN --patch_size 128 --rgb_range 1 --n_channel_in 1 --n_channel_out 1 --n_layers 10 --half_resblocks --enable_branches --n_branches 2 --pre_train ../experiment/LapSRN_x4_b1/model/model_best.pt --loss 1*MSE --epochs 30 --save LapSRN_x4_b2 --reset
+```
+
+# Evaluation
+
+For each model (along with its 2 residual branches), evaluation scripts (on Set5) are mentioned below:
+
+```shell
+#LapSRN
+#python main.py --model LapSRN --rgb_range 1 --n_channel_in 1 --n_channel_out 1 --n_layers 10 --n_feats 64 --pre_train ../experiment/model/LapSRN_x4.pt --save test/Set5/LapSRN_x4 --save_results --save_residuals --reset --test_only --data_test Set5
+#python main.py --model LapSRN --rgb_range 1 --n_channel_in 1 --n_channel_out 1 --n_layers 10 --n_feats 64 --half_resblocks --enable_branches --n_branches 1 --pre_train /datadrive/sr-experiments/final_models/LapSRN_x4_b1/model/model_best.pt --save test/Set5/LapSRN_x4_b1 --save_results --save_residuals --reset --test_only --data_test Set5
+#python main.py --model LapSRN --rgb_range 1 --n_channel_in 1 --n_channel_out 1 --n_layers 10 --n_feats 64 --half_resblocks --enable_branches --n_branches 2 --pre_train /datadrive/sr-experiments/final_models/LapSRN_x4_b2/model/model_best.pt --save test/Set5/LapSRN_x4_b2 --save_results --save_residuals --save_branches --reset --test_only --data_test Set5
+
+#SRResNet
+#python main.py --model SRResNet --pre_train ../experiment/model/SRResNet_x4.pt --save test/Set5/SRResNet_x4 --save_results --save_residuals --reset --test_only --data_test Set5
+#python main.py --model SRResNet --half_resblocks --enable_branches --n_branches 1 --pre_train /datadrive/sr-experiments/final_models/SRResNet_x4_b1/model/model_best.pt --save test/Set5/SRResNet_x4_b1 --save_results --save_residuals --reset --test_only --data_test Set5
+#python main.py --model SRResNet --half_resblocks --enable_branches --n_branches 2 --pre_train /datadrive/sr-experiments/final_models/SRResNet_x4_b2/model/model_best.pt --save test/Set5/SRResNet_x4_b2 --save_results --save_residuals --save_branches --reset --test_only --data_test Set5
+
+#EDSRb 
+#python main.py --model EDSR --pre_train ../experiment/model/EDSR_baseline_x4.pt --save test/Set5/EDSRb_x4 --save_results --save_residuals --reset --test_only --data_test Set5
+#python main.py --model EDSR --half_resblocks --enable_branches --n_branches 1 --pre_train /datadrive/sr-experiments/final_models/EDSRb_x4_b1/model/model_best.pt --save test/Set5/EDSRb_x4_b1 --save_results --save_residuals --reset --test_only --data_test Set5
+#python main.py --model EDSR --half_resblocks --enable_branches --n_branches 2 --pre_train /datadrive/sr-experiments/final_models/EDSRb_x4_b2/model/model_best.pt --save test/Set5/EDSRb_x4_b2 --save_results --save_residuals --save_branches --reset --test_only --data_test Set5
+
+#EDSR
+#python main.py --model EDSR --n_resblocks 32 --n_feats 256 --res_scale .1 --pre_train ../experiment/model/EDSR_x4.pt --save test/Set5/EDSR_x4 --save_results --save_residuals --reset --test_only --data_test Set5
+#python main.py --model EDSR --n_resblocks 32 --n_feats 256 --res_scale .1 --half_resblocks --enable_branches --n_branches 1 --pre_train /datadrive/sr-experiments/final_models/EDSR_x4_b1/model/model_best.pt --save test/Set5/EDSR_x4_b1 --save_results --save_residuals --reset --test_only --data_test Set5
+#python main.py --model EDSR --n_resblocks 32 --n_feats 256 --res_scale .1 --half_resblocks --enable_branches --n_branches 2 --pre_train /datadrive/sr-experiments/final_models/EDSR_x4_b2/model/model_best.pt --save test/Set5/EDSR_x4_b2 --save_results --save_residuals --save_branches --reset --test_only --data_test Set5
+
+#RDN
+#python main.py --model RDN --n_denseblocks 16 --n_layers 8 --n_feats 64 --growth_rate 64 --pre_train ../experiment/model/RDN_x4.pt --save test/Set5/RDN_x4 --save_results --save_residuals --reset --test_only --data_test Set5
+#python main.py --model RDN --n_denseblocks 16 --n_layers 8 --n_feats 64 --growth_rate 64 --enable_branches --n_branches 1 --half_resblocks --pre_train /datadrive/sr-experiments/final_models/RDN_x4_b1/model/model_best.pt --save test/Set5/RDN_x4_b1 --save_results --save_residuals --reset --test_only --data_test Set5
+#python main.py --model RDN --n_denseblocks 16 --n_layers 8 --n_feats 64 --growth_rate 64 --enable_branches --n_branches 2 --half_resblocks --pre_train /datadrive/sr-experiments/final_models/RDN_x4_b2/model/model_best.pt --save test/Set5/RDN_x4_b2 --save_results --save_residuals --save_branches --reset --test_only --data_test Set5
+```
+
+For other datasets, please see the file `eval.sh`.
+
+# Results
+
+![results-table](./figs/results-table.png)
+
+# Other State of the Arts Implemented in this Repository
+
+## RDN 
+![rdn](./figs/rdn.png)
+
+## EDSR
+![edsr](./figs/edsr.png)
+
+## SRResNet
+![srresnet](./figs/srresnet.png)
+
+## SRDenseNet
+![srdensenet](./figs/srdensenet.png)
+
+## LapSRN 
+![lapsrn](./figs/lapsrn.png)
+
+## DRRN 
+![drrn](./figs/drrn.png)
+
+## VDSR 
+![vdsr](./figs/vdsr.png)
+
+# Acknowledgments
+
+This code is extended from [Pytorch Version of EDSR](https://github.com/thstkdgus35/EDSR-PyTorch) who we thank
