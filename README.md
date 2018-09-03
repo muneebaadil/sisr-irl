@@ -177,6 +177,11 @@ For other datasets, please see the file `eval.sh`.
 ## VDSR 
 ![vdsr](./figs/vdsr.png)
 
+# TODO
+
+* Better/efficient interface for loading/saving weights
+* Upload pre-trained weights of IRL 
+
 # Acknowledgments
 
 This code is extended from [Pytorch Version of EDSR](https://github.com/thstkdgus35/EDSR-PyTorch) who we thank
