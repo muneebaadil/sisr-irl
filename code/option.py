@@ -152,6 +152,8 @@ parser.add_argument('--weight_decay', type=float, default=0,
 # Loss specifications
 parser.add_argument('--loss', type=str, default='1*L1',
                     help='loss function configuration')
+parser.add_argument('--vgg_scale', type=float, default=12.75,
+                    help='division factor for VGG feature maps')
 parser.add_argument('--intensity_loss',action='store_true',
                     help='compute loss on intensity channel only')
 parser.add_argument('--normalized_loss', action='store_true',

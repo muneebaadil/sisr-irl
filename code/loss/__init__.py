@@ -65,7 +65,8 @@ class Loss(nn.modules.loss._Loss):
                 module = import_module('loss.vgg')
                 loss_function = getattr(module, 'VGG')(
                     loss_type[3:],
-                    rgb_range=args.rgb_range
+                    rgb_range=args.rgb_range,
+                    vgg_scale=args.vgg_scale
                 )
             elif loss_type.find('GAN') >= 0:
                 module = import_module('loss.adversarial')
