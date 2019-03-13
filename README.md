@@ -154,6 +154,10 @@ For other datasets, please see the file `eval.sh`.
 
 ![results-table](./figs/results-table.png)
 
+![qual1](./figs/qual1.png)
+![qual2](./figs/qual2.png)
+![qual3](./figs/qual3.png)
+
 # Other State of the Arts Implemented in this Repository
 
 ## RDN 
@@ -176,11 +180,6 @@ For other datasets, please see the file `eval.sh`.
 
 ## VDSR 
 ![vdsr](./figs/vdsr.png)
-
-# TODO
-
-* Better/efficient interface for loading/saving weights
-* Upload pre-trained weights of IRL 
 
 # Acknowledgments
 
