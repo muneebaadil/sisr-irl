@@ -1,4 +1,4 @@
-# Improving Super-Resolution Methods via Incremental Residual Learning
+# Improving Super-Resolution Methods via Incremental Residual Learning [ICIP'19]
 
 ![demo](./figs/demo.png)
 
