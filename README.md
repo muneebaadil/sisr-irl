@@ -2,18 +2,18 @@
 
 ![demo](./figs/demo.png)
 
-Recently, deep Convolutional Neural Networks (CNNs) have shown promising performance in accurate reconstruction of high resolution (HR) image, given its low resolution (LR) counter-part. However, recent state-of-the-art methods operate primarily on LR image for memory efficiency, but we show that it comes at the cost of performance. Furthermore, because spatial dimensions of input and output of such networks do not match, it's not possible to learn residuals in image space; we show that learning residuals in image space leads to performance enhancement. To this end, we propose a novel Incremental Residual Learning (IRL) framework to solve the above mentioned issues. In IRL, a set of branches i.e arbitrary image-to-image networks are trained sequentially where each branch takes spatially upsampled higher dimensional feature maps as input and predicts the residuals of all previous branches combined. We plug recent state of the art methods as base networks in IRL framework and demonstrate the consistent performance enhancement through extensive experiments on public benchmark datasets to set a new state of the art for super-resolution. Compared to the base networks our method incurs no extra memory overhead as only one branch is trained at a time. Furthermore, as our method is trained to learned residuals, complete set of branches are trained in only 20% of time relative to base network. 
+Recently, Convolutional Neural Networks (CNNs) have shown promising performance in super-resolution (SR). However, these methods operate primarily on Low Resolution (LR) inputs for memory efficiency but this limits, as we demonstrate, their ability to (i) model high frequency information; and (ii) smoothly translate from LR to High Resolution (HR) space. To this end, we propose a novel Incremental Residual Learning (IRL) framework to address these mentioned issues. In IRL, first we select a typical SR pre-trained network as a master branch. Next we sequentially train and add residual branches to the main branch, where each residual branch is learned to model accumulated residuals of all previous branches. We plug state of the art methods in IRL framework and demonstrate consistent performance improvement on public benchmark datasets to set a new state of the art for SR at only approximately 20% increase in training time.
 
 Please view the full paper [here](https://arxiv.org/abs/1808.07110)
 
 If you find our work useful, please consider citing: 
 
 ```
-@article{muneeb2018irl,
+@article{aadil2019irl,
   title={Improving Super-Resolution Methods via Incremental Residual Learning},
   author={M. Aadil, R. Rahim, S. Hussain},
-  journal={arXiv preprint arXiv:1808.07110},
-  year={2018}
+  journal={To appear at IEEE International Conference on Image Processing (ICIP)},
+  year={2019}
 }
 ```
 
@@ -159,27 +159,13 @@ For other datasets, please see the file `eval.sh`.
 ![qual3](./figs/qual3.png)
 
 # Other State of the Arts Implemented in this Repository
-
-## RDN 
-![rdn](./figs/rdn.png)
-
-## EDSR
-![edsr](./figs/edsr.png)
-
-## SRResNet
-![srresnet](./figs/srresnet.png)
-
-## SRDenseNet
-![srdensenet](./figs/srdensenet.png)
-
-## LapSRN 
-![lapsrn](./figs/lapsrn.png)
-
-## DRRN 
-![drrn](./figs/drrn.png)
-
-## VDSR 
-![vdsr](./figs/vdsr.png)
+1. RDN
+2. EDSR
+3. SRResNet
+4. SRDenseNet
+5. LapSRN
+6. DRRN
+7. VDSR
 
 # Acknowledgments
 
