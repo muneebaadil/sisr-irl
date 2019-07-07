@@ -9,10 +9,10 @@ Please view the full paper [here](https://arxiv.org/abs/1808.07110)
 If you find our work useful, please consider citing: 
 
 ```
-@article{aadil2019irl,
+@InProceedings{aadil2019irl,
   title={Improving Super-Resolution Methods via Incremental Residual Learning},
-  author={M. Aadil, R. Rahim, S. Hussain},
-  journal={To appear at IEEE International Conference on Image Processing (ICIP)},
+  author={Aadil, Muneeb and Rahim, Rafia and Hussain, Sibt ul},
+  booktitle={IEEE International Conference on Image Processing (ICIP)},
   year={2019}
 }
 ```
